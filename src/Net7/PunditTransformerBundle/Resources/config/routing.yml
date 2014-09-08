@@ -1,0 +1,9 @@
+net7_pundit_transformer_info:
+    path:     /
+    defaults: { _controller: Net7PunditTransformerBundle:Default:info }
+    methods:   [GET]
+
+net7_pundit_transformer_start:
+    path:     /
+    defaults: { _controller: Net7PunditTransformerBundle:Default:start }
+    methods:   [POST]

@@ -1,0 +1,7 @@
+parameters:
+#    net7_pundit_transformer.example.class: Net7\PunditTransformerBundle\Example
+
+services:
+#    net7_pundit_transformer.example:
+#        class: %net7_pundit_transformer.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
