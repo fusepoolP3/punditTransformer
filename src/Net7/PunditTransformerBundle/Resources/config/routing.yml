@@ -7,3 +7,19 @@ net7_pundit_transformer_start:
     path:     /
     defaults: { _controller: Net7PunditTransformerBundle:Default:start }
     methods:   [POST]
+
+net7_pundit_transformer_status:
+    path:     /status/{taskId}
+    defaults: { _controller: Net7PunditTransformerBundle:Default:status }
+    methods:   [GET]
+
+net7_pundit_transformer_show:
+    path:     /show/{taskId}
+    defaults: { _controller: Net7PunditTransformerBundle:Default:show }
+    methods:   [GET]
+
+net7_pundit_transformer_save_from_pundit:
+    path:     /save_from_pundit
+    defaults: { _controller: Net7PunditTransformerBundle:Default:saveFromPundit }
+    methods:   [POST]
+
