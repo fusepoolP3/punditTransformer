@@ -12,6 +12,7 @@ class FusepoolScraper {
 
     private $Fp3Ns = 'http://vocab.fusepool.info/fp3#';
     private $RDFHtmlTag = 'html';
+    private $RDFHtmlContainerTag = 'htmlContainer';
 
 
     /**
@@ -42,34 +43,38 @@ class FusepoolScraper {
      * @return mixed
      */
 
-    private function extractHtmlFromData(){
-
+    private function extractHtmlFromData()
+    {
         $data = $this->data;
 
-        $dom = new \DOMDocument("1.0", "utf-8");
-
         libxml_use_internal_errors(true);
-        if(!$dom->loadHTML($data)){
+        $dom = new \SimpleXMLElement($data, LIBXML_HTML_NOIMPLIED && LIBXML_NOXMLDECL);
+
+        if ($dom === false) {
+
             foreach (libxml_get_errors() as $error) {
-                var_dump($error);
+                echo "\t", $error->message;
             }
-            libxml_clear_errors();
-        }
 
-
-        // Input can be an HTML or an RDF containing a tag with the HTML.
-        // We look for said tag, if it's there then we use it, otherwise we take the whole input
-        $FPhtmlNodeList = $dom->getElementsByTagNameNS($this->Fp3Ns, $this->RDFHtmlTag);
-
-        if ($FPhtmlNodeList->length != 0){
-            // this is a well-formed RDF with a RDF:HTML literal node containing the HTML, we take it
-            $FPHtmlNode = $FPhtmlNodeList->item(0);
-            $htmlNodeList = $FPHtmlNode->getElementsByTagName('html');
-            $htmlNode = $htmlNodeList->item(0);
-            return $dom->saveHTML($htmlNode);
         } else {
-            // this is not a well-formed RDF documents, let's see if it's an HTML one
-            return $dom->saveHTML();
+
+            $html = (string)current($dom->xpath('//rdf:RDF/fp:htmlContainer/fp:html'));
+            if ($html) {
+                return $html;
+            } else {
+
+                $dom = new \DOMDocument("1.0", "utf-8");
+                libxml_use_internal_errors(true);
+                if (!$dom->loadHTML($data)) {
+                    foreach (libxml_get_errors() as $error) {
+                        var_dump($error);
+                    }
+                    libxml_clear_errors();
+                }
+                return $dom->saveHTML();
+            }
+
+
         }
 
     }
@@ -137,6 +142,7 @@ class FusepoolScraper {
 
 
         $punditCode = <<<EOF
+          <link rel="stylesheet" href="/pundit2/feed.css" type="text/css">
           <link rel="stylesheet" href="/pundit2/pundit2.css" type="text/css">
           <script src="/pundit2/libs.js" type="text/javascript" ></script>
           <script src="/pundit2/pundit2.js" type="text/javascript" ></script>

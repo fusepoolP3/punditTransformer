@@ -47,19 +47,21 @@ class DefaultController extends Controller
 
         $task = new \Net7\PunditTransformerBundle\Entity\Task();
         $task->setInput($document);
-//        $task->setPageContent('');
-//        $task->setOutput('');
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
 
-        $uri = $this->generateUrl('net7_pundit_transformer_status', array('taskId' => $task->getId()));
+        $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('taskId' => $task->getId()));
 
 
-        $response = new Response('', 202, array());
+        $content = '';
+        // TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
+        $content = "USE THIS URL TO ANNOTATE THIS PAGE IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('taskId' => $task->getId()), true) . " \r\n\r\n";
 
-        $response->headers->set('Location', $uri);
+        $response = new Response($content, 202, array());
+
+        $response->headers->set('Location', $statusUrl);
 
         return  $response;
 
@@ -124,6 +126,8 @@ class DefaultController extends Controller
         $scraper = new \Net7\PunditTransformerBundle\FusepoolScraper($input);
         $page= $scraper->getContent();
 
+
+
         echo $page;
 
         die();
@@ -143,7 +147,9 @@ class DefaultController extends Controller
         $asBaseUrl = $data['annotationServerBaseURL'];
         $apiUrl = $asBaseUrl . 'api/open/metadata/search?scope=all&query={"resources":["' . $punditContent . '"]}';
 
-//    $annotations = callCURL($apiUrl, 'dealWithAnnotations');
+
+        echo $apiUrl;
+        die();
 
         $annotations = new \EasyRdf_Graph($apiUrl);
         $annotations ->load();
