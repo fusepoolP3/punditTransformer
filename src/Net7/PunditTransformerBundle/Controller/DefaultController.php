@@ -57,7 +57,7 @@ class DefaultController extends Controller
 
         $content = '';
         // TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
-        $content = "USE THIS URL TO ANNOTATE THIS PAGE IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('taskId' => $task->getId()), true) . " \r\n\r\n";
+        $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('taskId' => $task->getId()), true) . " \r\n\r\n";
 
         $response = new Response($content, 202, array());
 
@@ -155,7 +155,6 @@ class DefaultController extends Controller
         $annotations ->load();
 
         echo $annotations->serialise('turtle');
-//    echo " \r\n ------  DETAILS ------ \r\n";
         foreach($annotations->resources() as $key => $resource){
 
 
