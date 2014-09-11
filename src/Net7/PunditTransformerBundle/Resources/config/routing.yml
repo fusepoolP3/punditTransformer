@@ -9,12 +9,12 @@ net7_pundit_transformer_start:
     methods:   [POST]
 
 net7_pundit_transformer_status:
-    path:     /status/{taskId}
+    path:     /status/{token}
     defaults: { _controller: Net7PunditTransformerBundle:Default:status }
     methods:   [GET]
 
 net7_pundit_transformer_show:
-    path:     /show/{taskId}
+    path:     /show/{token}
     defaults: { _controller: Net7PunditTransformerBundle:Default:show }
     methods:   [GET]
 

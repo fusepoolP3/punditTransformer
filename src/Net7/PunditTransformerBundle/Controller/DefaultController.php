@@ -52,12 +52,12 @@ class DefaultController extends Controller
         $em->persist($task);
         $em->flush();
 
-        $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('taskId' => $task->getId()));
+        $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('token' => $task->getToken()));
 
 
         $content = '';
         // TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
-        $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('taskId' => $task->getId()), true) . " \r\n\r\n";
+        $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
 
         $response = new Response($content, 202, array());
 
@@ -68,41 +68,41 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param $taskId
+     * @param $token
      * @return Response
      * Check the status of a task, and reply with the result (if ended), the error (if an error was shipped) or a
      * trans:Processing if still running
      */
-    public function statusAction($taskId){
+    public function statusAction($token){
 
         $em = $this->getDoctrine()->getManager();
-        $task = $em->find('Net7PunditTransformerBundle:Task', $taskId);
+        $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
         switch ($task->getStatus()){
             case \Net7\PunditTransformerBundle\Entity\Task::ENDED_STATUS:
-
-
                 $content = $task->getOutput();
+                $statusCode = '200';
                 break;
 
             case \Net7\PunditTransformerBundle\Entity\Task::STARTED_STATUS:
 
                 \EasyRdf_Namespace::set('trans', 'http://vocab.fusepool.info/transformer#');
-
                 $graph = new \EasyRdf_Graph();
                 $graph->add(' ','trans:status', 'trans:Processing');
                 $content = $graph->serialise('turtle');
+                $statusCode = '202';
                 break;
 
             default:
             case \Net7\PunditTransformerBundle\Entity\Task::ERROR_STATUS:
+                $statusCode = '400';
                 $content = "";
                 break;
 
 
         }
 
-        $statusCode = '202';
+
 
         $contentType =  array('content-type' => 'text/turtle');
 
@@ -110,15 +110,16 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param $taskId
+     * @param $token
      * @return Response
      *
      * Invoke Pundit with the content saved in the task passed as a parameter
      */
-    public function showAction($taskId){
+    public function showAction($token){
 
         $em = $this->getDoctrine()->getManager();
-        $task = $em->find('Net7PunditTransformerBundle:Task', $taskId);
+//        $task = $em->find('Net7PunditTransformerBundle:Task', $token);
+        $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
         $input = $task->getInput();
 
@@ -137,6 +138,13 @@ class DefaultController extends Controller
 
     public function saveFromPunditAction(){
 
+        $request = Request::createFromGlobals();
+        $http_referer = $request->server->get('HTTP_REFERER');
+        $token = substr($http_referer, strpos($http_referer , '/show/') + strlen('/show/'));
+
+        if (!$token){
+         die();
+        }
 
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);

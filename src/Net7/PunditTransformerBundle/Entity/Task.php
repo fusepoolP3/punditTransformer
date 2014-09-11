@@ -57,15 +57,21 @@ class Task
     private $output;
 
 
+    /**
+     * @var token
+     *
+     * @ORM\Column(name="token", type="string")
+     */
+    private $token;
+
 
      public function __construct() {
         $this->setStartedStatus();
         $this->setPageContent('');
         $this->setInput('');
         $this->setOutput('');
+        $this->setRandomToken();
     }
-
-
 
     /**
      * Get id
@@ -199,4 +205,31 @@ class Task
 
 
 
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     * @return Task
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string 
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function setRandomToken(){
+        $this->setToken(uniqid());
+    }
 }
