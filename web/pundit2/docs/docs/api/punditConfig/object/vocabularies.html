@@ -1,0 +1,67 @@
+
+
+
+<header class="api-profile-header">
+  <h1 class="api-profile-header-heading">vocabularies</h1>
+  <ol class="api-profile-header-structure naked-list step-list">
+    
+    <li>
+      - object in module <a href="api/punditConfig">punditConfig</a>
+    </li>
+  </ol>
+</header>
+
+
+
+<div class="api-profile-description">
+  <p><code>Array of url</code>
+Specifies relations vocaularies that will be available to Pundit users
+(defines a list of relations with domain and ranges). 
+Each vocabulary definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.</p>
+<p>Default:</p>
+<pre> vocabularies: [] </pre>
+
+<p>URL Response Example:</p>
+<pre> {
+     result: {
+         items: [
+             "value": "http://purl.org/dc/terms/creator",
+             "rdftype":["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"],
+             "label":"has creator",
+             "description":"The selected text fragment has been created by a specific Person",
+             "domain":[
+                 "http://xmlns.com/foaf/0.1/Image",
+                 "http://purl.org/pundit/ont/ao#fragment-image",
+                 "http://purl.org/pundit/ont/ao#fragment-text"
+              ],
+              "range":[
+                 "http://dbpedia.org/ontology/Person",
+                 "http://xmlns.com/foaf/0.1/Person",
+                 "http://www.freebase.com/schema/people/person"
+              ],
+         ...other items...
+         ]
+     }
+}</pre>
+</div>
+
+
+
+
+<div>
+  
+
+    
+
+  
+
+  
+  
+  
+
+
+
+  
+</div>
+
+

@@ -1,0 +1,216 @@
+
+
+
+<header class="api-profile-header">
+  <h1 class="api-profile-header-heading">ContextualMenu</h1>
+  <ol class="api-profile-header-structure naked-list step-list">
+    
+  
+
+    <li>
+      - service in module <a href="api/Pundit2.ContextualMenu">Pundit2.ContextualMenu</a>
+    </li>
+  </ol>
+</header>
+
+
+
+<div class="api-profile-description">
+  <p>Somethings...</p>
+
+</div>
+
+
+
+
+<div>
+  
+
+    
+
+  
+
+  
+<h2>Methods</h2>
+<ul class="methods">
+  <li id="show">
+    <h3><p><code>show(x, y, resource, type);</code></p>
+
+</h3>
+    <div><p>Show contextual menu (asynchronous).</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        x
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">Number</a>
+      </td>
+      <td>
+        
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        y
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">Number</a>
+      </td>
+      <td>
+        
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        resource
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-object">Object</a>
+      </td>
+      <td>
+        
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        type
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-string">String</a>
+      </td>
+      <td>
+        
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="hide">
+    <h3><p><code>hide();</code></p>
+
+</h3>
+    <div><p>Hide contextual menu.</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="addAction">
+    <h3><p><code>addAction(action);</code></p>
+
+</h3>
+    <div><p>Add action to contextual menu.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        action
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-object">Object</a>
+      </td>
+      <td>
+        <p>Action to add to the menu.</p>
+<ul>
+<li><code>name</code> - <code>{string}</code> : action name, used as key to not duplicate the menu actions.</li>
+<li><code>label</code> - <code>{string}</code> : action label displayed inside menu.</li>
+<li><code>type</code> - <code>{Array of string}</code> : types of menus in which the action is shown.</li>
+<li><code>priority</code> - <code>{number}</code> : determines the order of the actions inside menu.</li>
+<li><code>showIf</code> - <code>{function(res)}</code> : if returns true, the action is shown in the menu,
+receives as a parameter the resource passed in the &quot;show()&quot;.</li>
+<li><code>action</code> - <code>{function(res)}</code> : function that is executed when you click on the action,
+receives as a parameter the resource passed in the &quot;show()&quot;.</li>
+</ul>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-boolean">boolean</a></td>
+    <td><p>true if the action was successfully added, false otherwise (duplicated action).</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  </ul>
+  
+  
+
+
+
+  
+</div>
+
+

@@ -1,0 +1,101 @@
+
+<h1>Object components in <code>punditConfig</code></h1>
+
+
+
+<div class="component-breakdown">
+  <div>
+    <table class="definition-table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/korbo">korbo</a></td>
+        <td><p><code>object</code></p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/imageFragmentAnnotator">imageFragmentAnnotator</a></td>
+        <td><p><code>object</code></p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/annotationServerBaseURL">annotationServerBaseURL</a></td>
+        <td><p><code>string</code>
+Pundit server base URL.</p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/confURL">confURL</a></td>
+        <td><p><code>string</code>
+Pundit configuration file URL if exist, otherwise tha value is &#39;local&#39;.
+The configuration file is always available at run time inside &#39;PUNDIT&#39; global variable.
+Inside &#39;PUNDIT.config&#39; is visible the actual configuration of the client instantiated.
+Default:</p>
+<pre>
+confURL: 'local'
+</pre></td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/debugAllModules">debugAllModules</a></td>
+        <td><p><code>boolean</code>
+Active debug log for all modules.</p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/vocabularies">vocabularies</a></td>
+        <td><p><code>Array of url</code>
+Specifies relations vocaularies that will be available to Pundit users
+(defines a list of relations with domain and ranges). 
+Each vocabulary definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.</p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/templates">templates</a></td>
+        <td><p><code>Array of url</code>
+Specifies templates that will be available to Pundit users
+Each template definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
+The template to be used initially as a current must be first on the list.</p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/useTemplates">useTemplates</a></td>
+        <td><p><code>boolean</code>
+Load configured templates.</p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/useOnlyTemplateMode">useOnlyTemplateMode</a></td>
+        <td><p><code>boolean</code>
+Use only template mode. In this mode pundit allows you to make annotations using only the templates.</p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/useBasicRelations">useBasicRelations</a></td>
+        <td><p><code>boolean</code>
+Load basic relations configured in Client <a href="#!/api/punditConfig/object/modules#Client">modules</a></p>
+</td>
+      </tr>
+      
+      <tr>
+        <td><a href="api/punditConfig/object/modules">modules</a></td>
+        <td><p><code>object</code>
+List of all modules available in Pundit2 and their default configuration.</p>
+</td>
+      </tr>
+      
+    </table>
+  </div>
+</div>
+

@@ -1,0 +1,490 @@
+
+
+
+<header class="api-profile-header">
+  <h1 class="api-profile-header-heading">ResourcePanel</h1>
+  <ol class="api-profile-header-structure naked-list step-list">
+    
+  
+
+    <li>
+      - service in module <a href="api/Pundit2.ResourcePanel">Pundit2.ResourcePanel</a>
+    </li>
+  </ol>
+</header>
+
+
+
+<div class="api-profile-description">
+  <p>Handle the resource panel visualization and its content.</p>
+<p>Given a triple (complete or not), il will be show the list of items from their provenience (&#39;Page Items&#39;, &#39;My Items&#39;, &#39;Vocabularies&#39;)</p>
+<p>A triple is an array of URI, where:</p>
+<ul>
+<li>in the first position there is the Subject URI</li>
+<li>in the second position there is the Predicate URI</li>
+<li>in the third position there is the Object URI</li>
+</ul>
+<p>A triple is defined as complete when all URI are defined, incomplete otherwise.</p>
+
+</div>
+
+
+
+
+<div>
+  
+
+    
+
+  
+
+  
+<h2>Methods</h2>
+<ul class="methods">
+  <li id="hide">
+    <h3><p><code>hide();</code></p>
+
+</h3>
+    <div><p>Close and destroy the popover</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="showPopoverLiteral">
+    <h3><p><code>showPopoverLiteral(text, target);</code></p>
+
+</h3>
+    <div><p>Open a popover containing a textarea where is possible to insert a literal.</p>
+<p>Popover has two buttons: <code>Save</code> that resolve a promise and <code>Cancel</code> that close the popover.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        text
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-string">string</a>
+      </td>
+      <td>
+        <p>Text to visualize into textarea. By default, textarea will be show empty</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        target
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>DOM Element where to append the popover</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>when Save button is clicked, promise will be resolved with value entered in textarea</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="showPopoverCalendar">
+    <h3><p><code>showPopoverCalendar(date, target);</code></p>
+
+</h3>
+    <div><p>Open a popover containing a calendar.</p>
+<p>Popover has two buttons: <code>Save</code> that resolve a promise and <code>Cancel</code> that close the popover.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        date
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-date">date</a>
+      </td>
+      <td>
+        <p>Date selected when calendar is shown. If no date is specified, will be show the date set as default in configuration (See <a href="#!/api/punditConfig/object/modules#ResourcePanel.initialCalendarDate">here</a> for details).</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        target
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>DOM Element where to append the popover</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>when Save button is clicked, promise will be resolved with the selected date</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="showItemsForSubject">
+    <h3><p><code>showItemsForSubject(triple, target, label);</code></p>
+
+</h3>
+    <div><p>Open a popover where subject items are shown grouped according from their provenance (&#39;Page items&#39;, &#39;My items&#39;, &#39;Vocabularies&#39;).
+If predicate is not defined in the triple, all items will be shown.
+If predicate is defined in the triple, will be shown only items whose types are compatible with predicate domain</p>
+<p>My items are visible only if user is logged in.</p>
+<p>It is possible to insert a label to filter shown items and start a searching of new items in the vocabularies.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        triple
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-object">Object</a>
+      </td>
+      <td>
+        <p>object (for details content of this object, see <a href="#!/api/Pundit2.ResourcePanel/service/ResourcePanel">here</a>)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        target
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>DOM Element where to append the popover</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        label
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-string">string</a>
+      </td>
+      <td>
+        <p>label used to search subject in the vocabularies and filter shown Page Items and My Items</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>return a promise that will be resolved when a subject is selected</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="showItemsForObject">
+    <h3><p><code>showItemsForObject(triple, target, label);</code></p>
+
+</h3>
+    <div><p>Open a popover where object items are shown grouped according from their provenance (&#39;Page items&#39;, &#39;My items&#39;, &#39;Vocabularies&#39;).
+If predicate is not defined in the triple, all items will be shown.
+If predicate is defined in the triple, will be shown only items whose types are compatible with predicate range</p>
+<p>My items are visible only if user is logged in.</p>
+<p>It is possible to insert a label to filter shown items and start a searching of new items in the vocabularies.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        triple
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-object">Object</a>
+      </td>
+      <td>
+        <p>object (for details content of this object, see <a href="#!/api/Pundit2.ResourcePanel/service/ResourcePanel">here</a>)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        target
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>DOM Element where to append the popover</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        label
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-string">string</a>
+      </td>
+      <td>
+        <p>label used to search subject in the vocabularies and filter shown Page Items and My Items</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>return a promise that will be resolved when a subject is selected</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="showProperties">
+    <h3><p><code>showProperties(triple, target, label);</code></p>
+
+</h3>
+    <div><p>Open a popover where predicate items are shown.
+If subject and object are both not defined in the triple, all predicates will be shown.
+If only subject is defined in the triple, will be shown only predicates whose domain is compatible with subject types
+If only object is defined in the triple, will be shown only predicates whose range is compatible with subject types</p>
+<p>My items are visible only if user is logged in.</p>
+<p>It is possible to insert a label to filter shown predicates.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        triple
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-object">Object</a>
+      </td>
+      <td>
+        <p>object (for details content of this object, see <a href="#!/api/Pundit2.ResourcePanel/service/ResourcePanel">here</a>)</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        target
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>DOM Element where to append the popover</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        label
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-string">string</a>
+      </td>
+      <td>
+        <p>label used to search subject in the vocabularies and filter shown Page Items and My Items</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>return a promise that will be resolved when a subject is selected</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  </ul>
+  
+  
+
+
+
+  
+</div>
+
+

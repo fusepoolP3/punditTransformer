@@ -1,0 +1,88 @@
+
+
+
+<header class="api-profile-header">
+  <h1 class="api-profile-header-heading">templates</h1>
+  <ol class="api-profile-header-structure naked-list step-list">
+    
+    <li>
+      - object in module <a href="api/punditConfig">punditConfig</a>
+    </li>
+  </ol>
+</header>
+
+
+
+<div class="api-profile-description">
+  <p><code>Array of url</code>
+Specifies templates that will be available to Pundit users
+Each template definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
+The template to be used initially as a current must be first on the list.</p>
+<p>Default:</p>
+<pre> templates: [
+  "http://conf.thepund.it/V2/templates/tagFree",
+  "http://conf.thepund.it/V2/templates/comment",
+  "http://conf.thepund.it/V2/templates/tagFixedMarx",
+  "http://conf.thepund.it/V2/templates/timeline",
+  "http://conf.thepund.it/V2/templates/peopleGraph"
+] </pre>
+
+<p>Where a template is defined by:</p>
+<pre>
+{
+ "label": "Template label",
+ "description": "Template long description"
+ "triples" :
+     [
+         { triple 1 details },
+         { triple 2 details },
+         ....
+         { triple N details }
+     ]
+}
+</pre>
+
+<p>Where a triple is defined by:</p>
+<p><pre>
+{
+     &quot;mandatory&quot;:  true | false,
+     &quot;subject&quot; : {
+        &quot;value&quot; : ....,
+        &quot;type&quot;: &quot;uri|literal&quot;
+      }
+     &quot;predicate&quot; : {
+             &quot;uri&quot;: ...,
+             &quot;label&quot;: ...,
+             &quot;domain&quot;: [...],
+             &quot;range&quot;: [...],
+      },
+      &quot;object&quot; : {
+        &quot;value&quot; : ....,
+        &quot;type&quot;: &quot;uri|literal&quot;
+      }
+}
+</pre>
+All propeties are optional. By default a triple is mandatory.</p>
+
+</div>
+
+
+
+
+<div>
+  
+
+    
+
+  
+
+  
+  
+  
+
+
+
+  
+</div>
+
+

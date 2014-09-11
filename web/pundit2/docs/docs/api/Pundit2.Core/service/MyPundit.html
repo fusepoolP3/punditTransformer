@@ -1,0 +1,259 @@
+
+
+
+<header class="api-profile-header">
+  <h1 class="api-profile-header-heading">MyPundit</h1>
+  <ol class="api-profile-header-structure naked-list step-list">
+    
+  
+
+    <li>
+      - service in module <a href="api/Pundit2.Core">Pundit2.Core</a>
+    </li>
+  </ol>
+</header>
+
+
+
+<div class="api-profile-description">
+  <p>Handles the authentication workflow and stores informations about the logged-in user, like username, notebooks and other useful stuff.</p>
+<p>Checks if the user is logged in at startup, and request him to log in if needed.</p>
+
+</div>
+
+
+
+
+<div>
+  
+
+    
+
+  
+
+  
+<h2>Methods</h2>
+<ul class="methods">
+  <li id="getLoginStatus">
+    <h3><p><code>getLoginStatus();</code></p>
+
+</h3>
+    <div><p>Return the current login status.</p>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-string">string</a></td>
+    <td><p>current login status, that could be</p>
+<ul>
+<li><code>loggedIn</code>: if user is correctly logged in</li>
+<li><code>loggedOff</code>: if user is not logged in</li>
+<li><code>waitingForLogIn</code>: when authentication workflow is running but user is not logged in yet</li>
+</ul>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="isUserLogged">
+    <h3><p><code>isUserLogged();</code></p>
+
+</h3>
+    <div><p>Get if user is logged or not</p>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-boolean">boolean</a></td>
+    <td><p>true if user is logged in, false otherwise</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="getUserData">
+    <h3><p><code>getUserData();</code></p>
+
+</h3>
+    <div><p>Return all information about logged-in user</p>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-object">object</a></td>
+    <td><p>object contain the following properties:</p>
+<ul>
+<li><code>loginStatus</code> - <code>{number}</code>: must be 1 where user is logged in</li>
+<li><code>id</code> - <code>{string}</code>: userID</li>
+<li><code>uri</code> - <code>{string}</code>: user&#39;s profile uri</li>
+<li><code>openid</code> - <code>{string}</code>: user&#39;s openid uri used to get login</li>
+<li><code>firstName</code> - <code>{string}</code>: user&#39;s first name</li>
+<li><code>lastName</code> - <code>{string}</code>: user&#39;s last name</li>
+<li><code>fullName</code> - <code>{string}</code>: user&#39;s full name</li>
+<li><code>email</code> - <code>{string}</code>: user&#39;s email</li>
+<li><code>loginServer</code> - <code>{string}</code>: url to server login page</li>
+</ul>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="checkLoggedIn">
+    <h3><p><code>checkLoggedIn();</code></p>
+
+</h3>
+    <div><p>Check if user is logged in or not.</p>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>the promise will be resolved as true if is logged in, false otherwise</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="login">
+    <h3><p><code>login();</code></p>
+
+</h3>
+    <div><p>Check if user is logged in or not and:</p>
+<ul>
+<li>if user is logged in, resolve the login promise as true</li>
+<li>if user is not logged in, will be open the login modal to continue authentication</li>
+</ul>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>the promise will be resolved as true when user has finished authentication and is logged in correctly, false otherwise</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="openLoginPopUp">
+    <h3><p><code>openLoginPopUp();</code></p>
+
+</h3>
+    <div><p>Open the OpenID login popup where user can get login authentication</p>
+<p>When popup is opened, start a polling that check if login is happened or not</p>
+<p>When user is logged in correctly, promise will be resolves as true</p>
+<p>If user close modal login, promise will be resolved as false</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="logout">
+    <h3><p><code>logout();</code></p>
+
+</h3>
+    <div><p>Get user logout</p>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>the promise will be resolved as true when user is logged out</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="closeLoginModal">
+    <h3><p><code>closeLoginModal();</code></p>
+
+</h3>
+    <div><p>Close login modal and cancel polling timeout</p>
+<p>Login promise will not be resolved</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="cancelLoginModal">
+    <h3><p><code>cancelLoginModal();</code></p>
+
+</h3>
+    <div><p>Close login modal and cancel polling timeout</p>
+<p>In this case, authentication process will be interrupted and login promise will be resolved as true</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  </ul>
+  
+  
+
+
+
+  
+</div>
+
+
