@@ -1,0 +1,103 @@
+/* 
+    Document   : feed.css
+    Created on : Jan 14, 2013, 5:41:15 PM
+    Author     : piccioli
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+img.resize{
+    width:400px; /* you can use % */
+    padding: 5px;
+    height: auto;
+}
+
+
+.feed-space {
+    height: 50px;
+}
+
+.feed-container {
+    margin: 0 50px;
+    padding: 20px;
+    border: 1px solid #66;
+    background-color: #ddd;
+}
+
+.feed-header {
+    margin: 5px 50px;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    text-align: center;
+}
+.feed-header .next { float: right; }
+.feed-header .prev { float: left; }
+
+.feed-header .prev a,
+.feed-header .next a {
+    color: black;
+}
+
+.feed-header .prev a:hover,
+.feed-header .next a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.left-content {
+    width: 50%;
+    float: left;
+}
+
+.left-menu-content {
+    width: 20%;
+    padding: 5px;
+    float: left;
+}
+
+.page-content {
+    width: 75%;
+    padding: 5px;
+    float: left;
+}
+
+.right-content {
+    width: 50%;
+    float: right;
+}
+
+.right-content-details {
+    width: 10%;
+    padding: 5px;
+    float: right;
+}
+
+.left-content .feed-container {
+    margin: 0 10px;
+}
+
+.right-content .feed-container {
+    margin: 0 10px;
+}
+
+.left-content .feed-header {
+    margin: 5px 10px;
+}
+
+.right-content .feed-header {
+    margin: 5px 10px;
+}
+
+.pundit-content { 
+    /* TODO: why float left here? */
+    /* float: left; */
+}
+
+.pundit-content .annotable-image {
+    width: 100%;
+}
