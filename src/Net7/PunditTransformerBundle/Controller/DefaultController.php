@@ -48,19 +48,24 @@ class DefaultController extends Controller
         $task = new \Net7\PunditTransformerBundle\Entity\Task();
         $task->setInput($document);
 
+        $validation = $task->validateInput($document);
+
+
+        if (!$validation['status']){
+            return new Response($validation['message'], 500, array());
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
 
         $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('token' => $task->getToken()));
-
-
         $content = '';
         // TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
         $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
 
-        $response = new Response($content, 202, array());
 
+        $response = new Response($content, 202, array());
         $response->headers->set('Location', $statusUrl);
 
         return  $response;
@@ -80,7 +85,7 @@ class DefaultController extends Controller
 
         switch ($task->getStatus()){
             case \Net7\PunditTransformerBundle\Entity\Task::ENDED_STATUS:
-                $content = $task->getOutput();
+                $content = $task->getAnnotations();
                 $statusCode = '200';
                 break;
 
@@ -118,13 +123,12 @@ class DefaultController extends Controller
     public function showAction($token){
 
         $em = $this->getDoctrine()->getManager();
-//        $task = $em->find('Net7PunditTransformerBundle:Task', $token);
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
         $input = $task->getInput();
 
 
-        $scraper = new \Net7\PunditTransformerBundle\FusepoolScraper($input);
+        $scraper = new \Net7\PunditTransformerBundle\FusepoolScraper($input, $token);
         $page= $scraper->getContent();
 
 
@@ -146,6 +150,11 @@ class DefaultController extends Controller
          die();
         }
 
+
+        $em = $this->getDoctrine()->getManager();
+        $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
+
+
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
 
@@ -155,30 +164,28 @@ class DefaultController extends Controller
         $asBaseUrl = $data['annotationServerBaseURL'];
         $apiUrl = $asBaseUrl . 'api/open/metadata/search?scope=all&query={"resources":["' . $punditContent . '"]}';
 
-
-        echo $apiUrl;
-        die();
+        $task->setOutputPageContent($html);
 
         $annotations = new \EasyRdf_Graph($apiUrl);
         $annotations ->load();
 
-        echo $annotations->serialise('turtle');
+        $annotationTurtle = $annotations->serialise('turtle');
+
+
         foreach($annotations->resources() as $key => $resource){
 
-
-//        echo $resource->serialize('turtle');
-//        echo $key . "     ";
             $annotationId = $resource->get('<http://purl.org/pundit/ont/ao#id>');
 
+
+            echo "annid = "  . $annotationId;
+if (!$annotationId) {
+    continue;
+}
             // fam:selector
             $target = $resource->get('<http://www.openannotation.org/ns/hasTarget>');
 
-            echo "\r\n --- Target: " . $target . " --- \r\n";
             // fam:extracted-from
             $pageContent = $resource->get('<http://purl.org/pundit/ont/ao#hasPageContext>');
-            echo "\r\n content -> " . $pageContent . " --- \r\n";;
-
-            echo "\r\n --- Annotation: " . $key . " ---\r\n";
 
             $metadataUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/metadata';
             $graphUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/graph';
@@ -191,22 +198,21 @@ class DefaultController extends Controller
             $md->load();
             $gr->load();
             $it->load();
-            echo "\r\n -- Metadata: \r\n";
-            echo $md->serialise('turtle');
-            echo "\r\n -- Graph: \r\n";
-            echo $gr->serialise('turtle');
-            echo "\r\n -- Items: \r\n";
-            echo $it->serialise('turtle');
+            $annotationTurtle .= $md->serialise('turtle');
+            $annotationTurtle .= $gr->serialise('turtle');
+            $annotationTurtle .= $it->serialise('turtle');
 
-            echo " \r\n ------------ \r\n";
         }
 
 
+        $task->setAnnotations($annotationTurtle);
+        $task->setEndedStatus();
 
-//    echo $graph;
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($task);
+        $em->flush();
 
         die();
 
-        die();
     }
 }

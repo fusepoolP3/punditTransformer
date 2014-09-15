@@ -19,9 +19,9 @@ class FusepoolScraper {
      * Public contructor gets the data to be annotated, either in HTML or RDF format (containing the HTML)
      * as a parameter
      */
-    public function __construct($data) {
+    public function __construct($data, $token) {
         $this->data = $data;
-        $this->retrievePunditContentDefault();
+        $this->retrievePunditContentDefault($token);
     }
 
 
@@ -117,9 +117,9 @@ class FusepoolScraper {
 
     }
 
-    private function retrievePunditContentDefault() {
-
-        $punditAboutCode = 'http://purl.org/fp3/punditcontent-' . $this->doFirstTransformations();
+    private function retrievePunditContentDefault($token) {
+        $this->doFirstTransformations();
+        $punditAboutCode = 'http://purl.org/fp3/punditcontent-' . $token;
 
         if (preg_match('%class="pundit-content"%',$this->punditContent)){
             $this->punditContent =

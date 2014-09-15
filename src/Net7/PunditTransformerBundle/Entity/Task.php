@@ -35,11 +35,11 @@ class Task
 
 
     /**
-     * @var string
+     * @var input_page_content
      *
-     * @ORM\Column(name="page_content", type="text")
+     * @ORM\Column(name="input_page_content", type="text")
      */
-    private $pageContent;
+    private $inputPageContent;
 
     /**
      * @var status
@@ -50,11 +50,19 @@ class Task
 
 
     /**
-     * @var output
+     * @var output_page_content
      *
-     * @ORM\Column(name="output", type="text")
+     * @ORM\Column(name="output_page_content", type="text")
      */
-    private $output;
+    private $outputPageContent;
+
+
+    /**
+     * @var annotations
+     *
+     * @ORM\Column(name="annotations", type="text")
+     */
+    private $annotations;
 
 
     /**
@@ -69,7 +77,9 @@ class Task
         $this->setStartedStatus();
         $this->setPageContent('');
         $this->setInput('');
-        $this->setOutput('');
+        $this->setInputPageContent('');
+        $this->setOutputPageContent('');
+        $this->setAnnotations('');
         $this->setRandomToken();
     }
 
@@ -129,6 +139,79 @@ class Task
         return $this->input;
     }
 
+
+    /**
+     * Set inputPageContent
+     *
+     * @param string $inputPageContent
+     * @return Task
+     */
+    public function setInputPageContent($inputPageContent)
+    {
+        $this->inputPageContent = $inputPageContent;
+
+        return $this;
+    }
+
+    /**
+     * Get inputPageContent
+     *
+     * @return string
+     */
+    public function getInputPageContent()
+    {
+        return $this->inputPageContent;
+    }
+
+
+    /**
+     * Set outputPageContent
+     *
+     * @param string $outputPageContent
+     * @return Task
+     */
+    public function setOutputPageContent($outputPageContent)
+    {
+        $this->outputPageContent = $outputPageContent;
+
+        return $this;
+    }
+
+    /**
+     * Get outputPageContent
+     *
+     * @return string
+     */
+    public function getOutputPageContent()
+    {
+        return $this->outputPageContent;
+    }
+
+
+    /**
+     * Set annotations
+     *
+     * @param string $annotations
+     * @return Task
+     */
+    public function setAnnotations($annotations)
+    {
+        $this->annotations = $annotations;
+
+        return $this;
+    }
+
+    /**
+     * Get annotations
+     *
+     * @return string
+     */
+    public function getAnnotations()
+    {
+        return $this->annotations;
+    }
+
+
     /**
      * Get status
      *
@@ -152,28 +235,6 @@ class Task
         return $this;
     }
 
-    /**
-     * Set output
-     *
-     * @param string $output
-     * @return Task
-     */
-    public function setOutput($output)
-    {
-        $this->output = $output;
-
-        return $this;
-    }
-
-    /**
-     * Get output
-     *
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
 
 
     public function setStartedStatus(){
@@ -231,5 +292,23 @@ class Task
 
     public function setRandomToken(){
         $this->setToken(uniqid());
+    }
+
+    /**
+     * @param $data
+     * @return array
+     *
+     * test the input field and return an array with the status (boolean) and a message, if there were any errors
+     */
+    public function validateInput($data){
+
+        $res = array('status' => true);
+
+        if (trim($data) == ''){
+            $res = array('status' => false, 'message' => 'Empty Input');
+
+        }
+
+        return $res;
     }
 }
