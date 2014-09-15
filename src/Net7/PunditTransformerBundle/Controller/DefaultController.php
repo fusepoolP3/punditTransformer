@@ -29,7 +29,7 @@ class DefaultController extends Controller
         $r->add('dct:title', 'Pundit Transformer');
         $r->add('dct:description', 'Gets HTML/RDF documents and let the user add annotations on it');
         $r->add('trans:supportedInputFormat', 'text/html');
-        $r->add('trans:supportedInputFormat', 'text/turtle');
+        $r->add('trans:supportedInputFormat', 'application/rdf+xml');
         $r->add('trans:supportedOutputFormat', 'text/turtle');
 
         return new Response($graph->serialise('turtle'), '200', array('Content-type' => 'text/turtle'));
