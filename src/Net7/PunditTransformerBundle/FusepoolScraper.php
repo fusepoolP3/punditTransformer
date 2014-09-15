@@ -49,7 +49,7 @@ class FusepoolScraper {
 
         libxml_use_internal_errors(true);
         $dom = new \SimpleXMLElement($data, LIBXML_HTML_NOIMPLIED && LIBXML_NOXMLDECL);
-
+        libxml_use_internal_errors(false);
         if ($dom === false) {
 
             foreach (libxml_get_errors() as $error) {
@@ -71,6 +71,7 @@ class FusepoolScraper {
                     }
                     libxml_clear_errors();
                 }
+                libxml_use_internal_errors(false);
                 return $dom->saveHTML();
             }
 
@@ -79,8 +80,7 @@ class FusepoolScraper {
 
     }
 
-
-    public function doFirstTransformations(){
+    private function retrievePunditContentDefault($token) {
         $this->punditContent = $this->extractHtmlFromData();
 
         if (!$this->punditContent){
@@ -99,7 +99,7 @@ class FusepoolScraper {
             }
             libxml_clear_errors();
         }
-
+        libxml_use_internal_errors(false);
         $headNodeList = $dom->getElementsByTagName('head');
         $l = $headNodeList->length;
 
@@ -112,13 +112,6 @@ class FusepoolScraper {
         //   Add data-app-ng="Pundit2" attribute to BODY TAG
         //   And a pundit-content
         // ====================================================
-
-        return   md5($this->data);
-
-    }
-
-    private function retrievePunditContentDefault($token) {
-        $this->doFirstTransformations();
         $punditAboutCode = 'http://purl.org/fp3/punditcontent-' . $token;
 
         if (preg_match('%class="pundit-content"%',$this->punditContent)){
