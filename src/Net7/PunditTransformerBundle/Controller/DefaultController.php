@@ -61,7 +61,7 @@ class DefaultController extends Controller
 
         $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('token' => $task->getToken()));
         $content = '';
-        // TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
+        //TODO: TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
         $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
 
 

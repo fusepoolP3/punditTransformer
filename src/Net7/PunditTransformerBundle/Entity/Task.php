@@ -73,7 +73,8 @@ class Task
     private $token;
 
 
-     public function __construct() {
+    public function __construct()
+    {
         $this->setStartedStatus();
         $this->setPageContent('');
         $this->setInput('');
@@ -86,7 +87,7 @@ class Task
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -109,7 +110,7 @@ class Task
     /**
      * Get pageContent
      *
-     * @return string 
+     * @return string
      */
     public function getPageContent()
     {
@@ -236,35 +237,38 @@ class Task
     }
 
 
-
-    public function setStartedStatus(){
+    public function setStartedStatus()
+    {
         $this->status = self::STARTED_STATUS;
         return $this;
     }
 
-    public function setEndedStatus(){
+    public function setEndedStatus()
+    {
         $this->status = self::ENDED_STATUS;
         return $this;
     }
 
-    public function setErrorStatus(){
+    public function setErrorStatus()
+    {
         $this->status = self::ERROR_STATUS;
         return $this;
     }
 
-    public function isInErrorStatus(){
+    public function isInErrorStatus()
+    {
         return $this->status == self::ERROR_STATUS;
     }
 
-    public function isInEndedStatus(){
+    public function isInEndedStatus()
+    {
         return $this->status == self::ENDED_STATUS;
     }
 
-    public function isInStartedStatus(){
+    public function isInStartedStatus()
+    {
         return $this->status == self::STARTED_STATUS;
     }
-
-
 
 
     /**
@@ -283,14 +287,15 @@ class Task
     /**
      * Get token
      *
-     * @return string 
+     * @return string
      */
     public function getToken()
     {
         return $this->token;
     }
 
-    public function setRandomToken(){
+    public function setRandomToken()
+    {
         $this->setToken(uniqid());
     }
 
@@ -300,15 +305,29 @@ class Task
      *
      * test the input field and return an array with the status (boolean) and a message, if there were any errors
      */
-    public function validateInput($data){
+    public function validateInput($data)
+    {
 
         $res = array('status' => true);
 
-        if (trim($data) == ''){
+        if (trim($data) == '') {
             $res = array('status' => false, 'message' => 'Empty Input');
 
         }
 
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+        @$dom->loadXML($data);
+
+        if (($errors = libxml_get_errors()) != false) {
+            $msg = '';
+            foreach ($errors as $error) {
+                $msg .= $error->message . "\r\n";
+            }
+
+
+            $res = array('status' => false, 'message' => $msg);
+        }
         return $res;
     }
 }
