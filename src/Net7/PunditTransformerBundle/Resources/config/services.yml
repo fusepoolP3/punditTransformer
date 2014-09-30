@@ -1,5 +1,7 @@
 parameters:
 #    net7_pundit_transformer.example.class: Net7\PunditTransformerBundle\Example
+    IRURL: http://punditTransformer.local/IRMockup
+    TransformerUrl: http://punditTransformer.local/
 
 services:
 #    net7_pundit_transformer.example:

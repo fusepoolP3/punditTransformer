@@ -23,7 +23,6 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
 
-//        $this->assertTrue($crawler->filter('html:contains("Hello Fabien")')->count() > 0);
 
     }
 
@@ -33,7 +32,6 @@ class DefaultControllerTest extends WebTestCase
         $html = '<html><body>foo</body></html>';
 
         $client = static::createClient();
-
 
         $csrfToken = $client->getContainer()->get('form.csrf_provider')
             ->generateCsrfToken('form_intention');
@@ -54,4 +52,5 @@ class DefaultControllerTest extends WebTestCase
 
 
     }
+
 }

@@ -16,7 +16,7 @@ class DefaultController extends Controller
     public function infoAction()
     {
 
-        $punditTransformerURI = 'http://temporary.punditTransformer.uri.com/punditTransformer/';
+        $punditTransformerURI = $this->container->getParameter('TransformerUrl');
 
         \EasyRdf_Namespace::set('trans', 'http://vocab.fusepool.info/transformer#');
         \EasyRdf_Namespace::set('dct', 'http://purl.org/dc/terms/');
@@ -43,16 +43,17 @@ class DefaultController extends Controller
     public function startAction(){
 
         $request = Request::createFromGlobals();
-        $document = $request->request->get('data');
+
+        // We expect the data to be passed as the body of the request
+        $document = file_get_contents('php://input');
 
         $task = new \Net7\PunditTransformerBundle\Entity\Task();
         $task->setInput($document);
 
         $validation = $task->validateInput($document);
 
-
         if (!$validation['status']){
-            return new Response($validation['message'], 500, array());
+            return new Response($validation['message'], 400, array());
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -60,10 +61,13 @@ class DefaultController extends Controller
         $em->flush();
 
         $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('token' => $task->getToken()));
+
         $content = '';
         //TODO: TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
         $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
 
+        // we notify the UI layer about the newly available task.
+        $this->sendIRNotification($this->container->getParameter('IRURL'));
 
         $response = new Response($content, 202, array());
         $response->headers->set('Location', $statusUrl);
@@ -124,6 +128,17 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
+
+
+        if (!$task->isInStartedStatus()){
+            // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus())
+            // In both cases we don't want to let the user annotate the task content.
+
+         echo   $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig', array());
+            die();
+
+        }
+
 
         $input = $task->getInput();
 
@@ -213,6 +228,41 @@ if (!$annotationId) {
         $em->flush();
 
         die();
+
+    }
+
+    public function sendIRNotification($IRURL){
+
+
+        \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
+        \EasyRdf_Namespace::set('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
+
+        $graph = new \EasyRdf_Graph();
+
+        $r = $graph->resource($IRURL, 'trans:Transformer');
+
+
+        $r->add('fp3:InteractionRequest', 'Pundit Transformer');
+
+
+        echo $graph->serialise('turtle');
+        die();
+//        return new Response($graph->serialise('turtle'), '200', array('Content-type' => 'text/turtle'));
+
+
+    }
+
+
+
+    public function IRMockupAction(){
+
+        $mockLocation = 'http://demo.fusepoolp3.eu/ir-ldpc/foo';
+
+        $response = new Response('', 202, array());
+        $response->headers->set('Location', $mockLocation);
+
+        return  $response;
+
 
     }
 }

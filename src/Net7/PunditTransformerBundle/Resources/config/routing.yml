@@ -23,3 +23,7 @@ net7_pundit_transformer_save_from_pundit:
     defaults: { _controller: Net7PunditTransformerBundle:Default:saveFromPundit }
     methods:   [POST]
 
+net7_pundit_transformer_IR_mokup:
+    path:     /IRMockup
+    defaults: { _controller: Net7PunditTransformerBundle:Default:IRMockup }
+    methods:   [GET]
