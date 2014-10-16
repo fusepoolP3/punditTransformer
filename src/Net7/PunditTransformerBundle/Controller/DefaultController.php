@@ -40,8 +40,8 @@ class DefaultController extends Controller
      * Get the document (either HTML of RDF containing the HTML in a literal, and prepare the stuff for pundit.
      * @return string
      */
-    public function startAction(){
-
+    public function startAction()
+    {
         $request = Request::createFromGlobals();
 
         // We expect the data to be passed as the body of the request
@@ -50,9 +50,9 @@ class DefaultController extends Controller
         $task = new \Net7\PunditTransformerBundle\Entity\Task();
         $task->setInput($document);
 
-        $validation = $task->validateInput($document);
+        $validation = $task->validateInput();
 
-        if (!$validation['status']){
+        if (!$validation['status']) {
             return new Response($validation['message'], 400, array());
         }
 
@@ -64,15 +64,21 @@ class DefaultController extends Controller
 
         $content = '';
         //TODO: TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
-        $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " .  $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
+        $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " . $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
 
         // we notify the UI layer about the newly available task.
-        $this->sendIRNotification($this->container->getParameter('IRURL'));
+        $IRURI = $task->sendInteractionRequeset($this->container->getParameter('IRURL'), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true));
+
+        $task->setInteractionRequestURI($IRURI);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($task);
+        $em->flush();
 
         $response = new Response($content, 202, array());
         $response->headers->set('Location', $statusUrl);
 
-        return  $response;
+        return $response;
 
     }
 
@@ -82,12 +88,13 @@ class DefaultController extends Controller
      * Check the status of a task, and reply with the result (if ended), the error (if an error was shipped) or a
      * trans:Processing if still running
      */
-    public function statusAction($token){
+    public function statusAction($token)
+    {
 
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
-        switch ($task->getStatus()){
+        switch ($task->getStatus()) {
             case \Net7\PunditTransformerBundle\Entity\Task::ENDED_STATUS:
                 $content = $task->getAnnotations();
                 $statusCode = '200';
@@ -97,7 +104,7 @@ class DefaultController extends Controller
 
                 \EasyRdf_Namespace::set('trans', 'http://vocab.fusepool.info/transformer#');
                 $graph = new \EasyRdf_Graph();
-                $graph->add(' ','trans:status', 'trans:Processing');
+                $graph->add(' ', 'trans:status', 'trans:Processing');
                 $content = $graph->serialise('turtle');
                 $statusCode = '202';
                 break;
@@ -112,10 +119,9 @@ class DefaultController extends Controller
         }
 
 
+        $contentType = array('content-type' => 'text/turtle');
 
-        $contentType =  array('content-type' => 'text/turtle');
-
-        return new Response($content,$statusCode, $contentType);
+        return new Response($content, $statusCode, $contentType);
     }
 
     /**
@@ -124,52 +130,54 @@ class DefaultController extends Controller
      *
      * Invoke Pundit with the content saved in the task passed as a parameter
      */
-    public function showAction($token){
+    public function showAction($token)
+    {
 
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
 
-        if (!$task->isInStartedStatus()){
-            // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus())
+        if (!$task->isInStartedStatus()) {
+            // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus()).
             // In both cases we don't want to let the user annotate the task content.
-
-         echo   $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig', array());
-            die();
-
+            return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig', array());
         }
 
-
+        // we take the POSTed data
         $input = $task->getInput();
 
-
+        // and pass it through our scraper, which will enrich it and create an HTML page invoking the Pundit client
         $scraper = new \Net7\PunditTransformerBundle\FusepoolScraper($input, $token);
-        $page= $scraper->getContent();
-
-
+        $page = $scraper->getContent();
 
         echo $page;
 
         die();
-
-
     }
 
-    public function saveFromPunditAction(){
-
+    /**
+     * Invoked by the Pundit client, it is called upon finishing the annotation work.
+     * The user will have clicked the "finish" button, so we need to get the annotations from the annotation server
+     * and store them in the Task (we persist it in the DB).
+     *
+     * The task is also marked as completed, no further annotations can be made on it.
+     *
+     */
+    public function saveFromPunditAction()
+    {
         $request = Request::createFromGlobals();
         $http_referer = $request->server->get('HTTP_REFERER');
-        $token = substr($http_referer, strpos($http_referer , '/show/') + strlen('/show/'));
+        $token = substr($http_referer, strpos($http_referer, '/show/') + strlen('/show/'));
 
-        if (!$token){
-         die();
+        if (!$token) {
+            // Don't know how, but we didn't receive the token. We ship a 404 error.
+            return new Response('Missing token', 404, array());
         }
-
 
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
-
+        // The POST request will contain a json as it content
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
 
@@ -182,46 +190,53 @@ class DefaultController extends Controller
         $task->setOutputPageContent($html);
 
         $annotations = new \EasyRdf_Graph($apiUrl);
-        $annotations ->load();
 
-        $annotationTurtle = $annotations->serialise('turtle');
+        try {
 
+            $annotations->load();
+            $annotationTurtle = $annotations->serialise('turtle');
 
-        foreach($annotations->resources() as $key => $resource){
+            foreach ($annotations->resources() as $key => $resource) {
 
-            $annotationId = $resource->get('<http://purl.org/pundit/ont/ao#id>');
+                $annotationId = $resource->get('<http://purl.org/pundit/ont/ao#id>');
 
+                if (!$annotationId) {
+                    // some of the sub-graphs aren't about annotation, let's skip them
+                    continue;
+                }
+                // fam:selector
+                $target = $resource->get('<http://www.openannotation.org/ns/hasTarget>');
 
-            echo "annid = "  . $annotationId;
-if (!$annotationId) {
-    continue;
-}
-            // fam:selector
-            $target = $resource->get('<http://www.openannotation.org/ns/hasTarget>');
+                // fam:extracted-from
+                $pageContent = $resource->get('<http://purl.org/pundit/ont/ao#hasPageContext>');
 
-            // fam:extracted-from
-            $pageContent = $resource->get('<http://purl.org/pundit/ont/ao#hasPageContext>');
+                $metadataUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/metadata';
+                $graphUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/graph';
+                $itemsUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/items';
 
-            $metadataUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/metadata';
-            $graphUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/graph';
-            $itemsUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/items';
+                $md = new \EasyRdf_Graph($metadataUrl);
+                $gr = new \EasyRdf_Graph($graphUrl);
+                $it = new \EasyRdf_Graph($itemsUrl);
 
-            $md = new \EasyRdf_Graph($metadataUrl);
-            $gr = new \EasyRdf_Graph($graphUrl);
-            $it = new \EasyRdf_Graph($itemsUrl);
+                $md->load();
+                $gr->load();
+                $it->load();
+                $annotationTurtle .= $md->serialise('turtle');
+                $annotationTurtle .= $gr->serialise('turtle');
+                $annotationTurtle .= $it->serialise('turtle');
 
-            $md->load();
-            $gr->load();
-            $it->load();
-            $annotationTurtle .= $md->serialise('turtle');
-            $annotationTurtle .= $gr->serialise('turtle');
-            $annotationTurtle .= $it->serialise('turtle');
+            }
 
+            $task->setAnnotations($annotationTurtle);
+
+        } catch (\EasyRdf_Exception $e) {
+            // we haven't received data from the Annotation Server, maybe there isn't any annotation on the page
+            // we ignore the exception and procede with closing the task (the user has choosen to finish it up anyway)
         }
 
-
-        $task->setAnnotations($annotationTurtle);
         $task->setEndedStatus();
+
+        $task->sendInteractionRequestDeletion();
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
@@ -231,38 +246,4 @@ if (!$annotationId) {
 
     }
 
-    public function sendIRNotification($IRURL){
-
-
-        \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
-        \EasyRdf_Namespace::set('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
-
-        $graph = new \EasyRdf_Graph();
-
-        $r = $graph->resource($IRURL, 'trans:Transformer');
-
-
-        $r->add('fp3:InteractionRequest', 'Pundit Transformer');
-
-
-        echo $graph->serialise('turtle');
-        die();
-//        return new Response($graph->serialise('turtle'), '200', array('Content-type' => 'text/turtle'));
-
-
-    }
-
-
-
-    public function IRMockupAction(){
-
-        $mockLocation = 'http://demo.fusepoolp3.eu/ir-ldpc/foo';
-
-        $response = new Response('', 202, array());
-        $response->headers->set('Location', $mockLocation);
-
-        return  $response;
-
-
-    }
 }

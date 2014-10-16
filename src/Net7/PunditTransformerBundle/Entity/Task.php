@@ -73,6 +73,14 @@ class Task
     private $token;
 
 
+    /**
+     * @var interactionRequestURI
+     *
+     * @ORM\Column(name="interactionRequestURI", type="text")
+     */
+    private $interactionRequestURI;
+
+
     public function __construct()
     {
         $this->setStartedStatus();
@@ -82,6 +90,7 @@ class Task
         $this->setOutputPageContent('');
         $this->setAnnotations('');
         $this->setRandomToken();
+        $this->setInteractionRequestURI('');
     }
 
     /**
@@ -299,15 +308,43 @@ class Task
         $this->setToken(uniqid());
     }
 
+
+    /**
+     * Set interactionRequestURI
+     *
+     * @param string $interactionRequestURI
+     * @return Task
+     */
+    public function setInteractionRequestURI($interactionRequestURI)
+    {
+        $this->interactionRequestURI = $interactionRequestURI;
+
+        return $this;
+    }
+
+    /**
+     * Get interactionRequestURI
+     *
+     * @return string
+     */
+    public function getInteractionRequestURI()
+    {
+        return $this->interactionRequestURI;
+    }
+
+
+
+
     /**
      * @param $data
      * @return array
      *
      * test the input field and return an array with the status (boolean) and a message, if there were any errors
      */
-    public function validateInput($data)
+    public function validateInput()
     {
 
+        $data = $this->getInput();
         $res = array('status' => true);
 
         if (trim($data) == '') {
@@ -330,4 +367,86 @@ class Task
         }
         return $res;
     }
+
+
+    /**
+     * @param $IRURL
+     * @param $url
+     * @return mixed
+     *
+     * Performs an User Interaction Request and returns the InteractionRequestURI
+     * (to be used at a later stage to delete it when the Task is over)
+     */
+    public function sendInteractionRequeset($IRURL, $url)
+    {
+
+        \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
+        \EasyRdf_Namespace::set('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
+
+        $requestContent = <<<EOF
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<> a <http://vocab.fusepool.info/fp3#InteractionRequest> ;
+	<http://vocab.fusepool.info/fp3#interactionResource> "$url" ;
+	<http://www.w3.org/2000/01/rdf-schema#comment> "Pundit-annotation"@en .
+EOF;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $IRURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $requestContent);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/turtle'));
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+
+        $response = curl_exec($ch);
+        $headers = $this->get_headers_from_curl_response($response);
+        $location = $headers['Location'];
+
+        return $location;
+    }
+
+
+
+    public function sendInteractionRequestDeletion(){
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->getInteractionRequestURI());
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        $content = curl_exec($ch);
+
+        return $content;
+    }
+
+
+
+
+    private function get_headers_from_curl_response($response)
+    {
+        $headers = array();
+
+        $header_text = substr($response, 0, strpos($response, "\r\n\r\n"));
+
+        foreach (explode("\r\n", $header_text) as $i => $line)
+            if ($i === 0)
+                $headers['http_code'] = $line;
+            else
+            {
+                list ($key, $value) = explode(': ', $line);
+
+                $headers[$key] = $value;
+            }
+
+        return $headers;
+    }
+
 }
+

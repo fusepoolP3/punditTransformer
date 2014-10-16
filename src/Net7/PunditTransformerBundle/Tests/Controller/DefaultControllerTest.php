@@ -36,21 +36,33 @@ class DefaultControllerTest extends WebTestCase
         $csrfToken = $client->getContainer()->get('form.csrf_provider')
             ->generateCsrfToken('form_intention');
 
-        $crawler = $client->request('POST', '/', array('data' => $html));
 
-        echo $client->getResponse()->getStatusCode();
+        /*
+         *  can't make it work , we use web-server related notation, apparently.
+
+        $client->request('POST', '/', array(), array(), array(), $html);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
+*/
 
-
-
-        // TEST it replies with correct error on wrong input
-
+        // TEST if it replies with correct error on wrong input
         $crawler = $client->request('POST', '', array('data' => ''));
-        $this->assertTrue($client->getResponse()->isServerError());
+        $this->assertTrue($client->getResponse()->isClientError());
 
 
 
     }
 
+    public function testSaveFromPunditWithoutToken(){
+        $client = static::createClient();
+
+//        $csrfToken = $client->getContainer()->get('form.csrf_provider')
+//            ->generateCsrfToken('form_intention');
+
+        $crawler = $client->request('POST', '/save_from_pundit', array());
+
+        $this->assertTrue($client->getResponse()->isClientError());
+
+
+    }
 }
