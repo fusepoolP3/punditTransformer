@@ -11,6 +11,7 @@ var punditConfig = {
             active: true
         }
     },
+    useTemplates: false,
 
     annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/'
 
