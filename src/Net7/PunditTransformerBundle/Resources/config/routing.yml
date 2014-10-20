@@ -13,6 +13,11 @@ net7_pundit_transformer_status:
     defaults: { _controller: Net7PunditTransformerBundle:Default:status }
     methods:   [GET]
 
+net7_pundit_transformer_vocabulary:
+    path:     /vocabulary
+    defaults: { _controller: Net7PunditTransformerBundle:Default:vocabulary}
+    methods:   [GET]
+
 net7_pundit_transformer_show:
     path:     /show/{token}
     defaults: { _controller: Net7PunditTransformerBundle:Default:show }

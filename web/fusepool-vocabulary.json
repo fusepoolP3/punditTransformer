@@ -1,0 +1,32 @@
+{
+    "error_code": "200",
+    "error_message": "OK",
+    "result": {
+        "vocab_label": "Fusepool-Vocab",
+        "vocab_id": "1",
+        "vocab_type": "predicates",
+        "items": [
+            {
+                "value": "http://purl.org/dc/terms/creator",
+                "label": "has foo",
+                "description": "The selected text fragment has been created by a specific Person",
+                "nodetype": "node",
+                "is_root_node": true,
+                "rdftype": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+                ],
+                "domain": [
+                    "http://xmlns.com/foaf/0.1/Image",
+                    "http://purl.org/pundit/ont/ao#fragment-image",
+                    "http://purl.org/pundit/ont/ao#fragment-text"
+                ],
+                "range": [
+                    "http://dbpedia.org/ontology/Person",
+                    "http://xmlns.com/foaf/0.1/Person",
+                    "http://www.freebase.com/schema/people/person"
+                ],
+                "children": []
+            }
+        ]
+    }
+}

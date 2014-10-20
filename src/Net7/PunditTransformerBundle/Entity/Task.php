@@ -13,9 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Task
 {
 
+
     const STARTED_STATUS = 1;
     const ENDED_STATUS = 2;
     const ERROR_STATUS = 3;
+
+    const VALIDATION_EMPTY_INPUT = 'Empty input';
 
     /**
      * @var integer
@@ -348,7 +351,7 @@ class Task
         $res = array('status' => true);
 
         if (trim($data) == '') {
-            $res = array('status' => false, 'message' => 'Empty Input');
+            $res = array('status' => false, 'message' => self::VALIDATION_EMPTY_INPUT);
 
         }
 

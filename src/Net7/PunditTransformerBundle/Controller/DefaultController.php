@@ -3,6 +3,7 @@
 namespace Net7\PunditTransformerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -52,8 +53,16 @@ class DefaultController extends Controller
 
         $validation = $task->validateInput();
 
+
         if (!$validation['status']) {
-            return new Response($validation['message'], 400, array());
+            if ($validation['message'] != \Net7\PunditTransformerBundle\Entity\Task::VALIDATION_EMPTY_INPUT) {
+
+                $document = '<html><head><meta charset="utf-8"/></head><body>' . $document . '</body></html>';
+                $task->setInput($document);
+            } else {
+                return new Response($validation['message'], 400, array());
+
+            }
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -244,6 +253,24 @@ class DefaultController extends Controller
 
         die();
 
+    }
+
+
+    public function vocabularyAction()
+    {
+        $request = Request::createFromGlobals();
+        $callback = $request->get('jsonp');
+
+        ob_start();
+        include($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
+        $vocabulary = ob_get_clean();
+
+        $response = new JsonResponse($vocabulary, 200, array());
+        $response->setCallback($callback);
+
+//        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
 }

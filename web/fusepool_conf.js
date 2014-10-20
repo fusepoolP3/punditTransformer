@@ -1,6 +1,6 @@
 var punditConfig = {
-//    vocabularies: ['http://manager.korbo.org/91'],
-//    useBasicRelations: false,
+    vocabularies: ['/vocabulary'],
+    useBasicRelations: false,
     modules: {
 	'Fp3': {
 	    active: true,

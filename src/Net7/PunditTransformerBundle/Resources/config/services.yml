@@ -1,6 +1,6 @@
 parameters:
 #    net7_pundit_transformer.example.class: Net7\PunditTransformerBundle\Example
-    IRURL: http://localhost:8080/ldp/ir-ldpc-2
+    IRURL: http://localhost:8181/ldp/ir-ldpc
     TransformerUrl: http://punditTransformer.local/
 
 services:
