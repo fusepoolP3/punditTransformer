@@ -1,6 +1,14 @@
 // Meta data used by the AngularJS docs app
 angular.module('pagesData', [])
   .value('NG_PAGES', {
+  "api/index": {
+    "docType": "module",
+    "id": "module:index",
+    "name": "index",
+    "area": "api",
+    "outputPath": "docs/api/index/index.html",
+    "path": "api/index"
+  },
   "api/punditConfig": {
     "docType": "module",
     "id": "module:punditConfig",
@@ -24,6 +32,14 @@ angular.module('pagesData', [])
     "area": "api",
     "outputPath": "docs/api/Pundit2.Annomatic/index.html",
     "path": "api/Pundit2.Annomatic"
+  },
+  "api/Pundit2.Annomatic/service/Annomatic": {
+    "docType": "service",
+    "id": "module:Pundit2.Annomatic.service:Annomatic",
+    "name": "Annomatic",
+    "area": "api",
+    "outputPath": "docs/api/Pundit2.Annomatic/service/Annomatic.html",
+    "path": "api/Pundit2.Annomatic/service/Annomatic"
   },
   "api/Pundit2.AnnotationSidebar": {
     "docType": "module",
@@ -153,6 +169,14 @@ angular.module('pagesData', [])
     "outputPath": "docs/api/punditConfig/object/useTemplates.html",
     "path": "api/punditConfig/object/useTemplates"
   },
+  "api/punditConfig/object/forceTemplateEdit": {
+    "docType": "object",
+    "id": "module:punditConfig.object:forceTemplateEdit",
+    "name": "forceTemplateEdit",
+    "area": "api",
+    "outputPath": "docs/api/punditConfig/object/forceTemplateEdit.html",
+    "path": "api/punditConfig/object/forceTemplateEdit"
+  },
   "api/punditConfig/object/useOnlyTemplateMode": {
     "docType": "object",
     "id": "module:punditConfig.object:useOnlyTemplateMode",
@@ -176,6 +200,14 @@ angular.module('pagesData', [])
     "area": "api",
     "outputPath": "docs/api/punditConfig/object/modules.html",
     "path": "api/punditConfig/object/modules"
+  },
+  "api/punditConfig/object/lodLive": {
+    "docType": "object",
+    "id": "module:punditConfig.object:lodLive",
+    "name": "lodLive",
+    "area": "api",
+    "outputPath": "docs/api/punditConfig/object/lodLive.html",
+    "path": "api/punditConfig/object/lodLive"
   },
   "api/Pundit2.Dashboard": {
     "docType": "module",
@@ -241,21 +273,21 @@ angular.module('pagesData', [])
     "outputPath": "docs/api/KorboEE/object/KORBODEFAULTCONF.html",
     "path": "api/KorboEE/object/KORBODEFAULTCONF"
   },
-  "app/src/KorboEE/doc-content/onlyCallback": {
-    "docType": "overview",
-    "id": "onlyCallback",
+  "api/KorboEE/tutorial/UseOnlyCallBack": {
+    "docType": "tutorial",
+    "id": "module:KorboEE.tutorial:UseOnlyCallBack",
     "name": "UseOnlyCallBack",
     "area": "api",
-    "outputPath": "docs/app/src/KorboEE/doc-content/onlyCallback.html",
-    "path": "app/src/KorboEE/doc-content/onlyCallback"
+    "outputPath": "docs/api/KorboEE/tutorial/UseOnlyCallBack.html",
+    "path": "api/KorboEE/tutorial/UseOnlyCallBack"
   },
-  "app/src/KorboEE/doc-content/tafonyCompatibility": {
-    "docType": "overview",
-    "id": "tafonyCompatibility",
+  "api/KorboEE/tutorial/TafonyCompatibility": {
+    "docType": "tutorial",
+    "id": "module:KorboEE.tutorial:TafonyCompatibility",
     "name": "TafonyCompatibility",
     "area": "api",
-    "outputPath": "docs/app/src/KorboEE/doc-content/tafonyCompatibility.html",
-    "path": "app/src/KorboEE/doc-content/tafonyCompatibility"
+    "outputPath": "docs/api/KorboEE/tutorial/TafonyCompatibility.html",
+    "path": "api/KorboEE/tutorial/TafonyCompatibility"
   },
   "api/Pundit2.MyItemsContainer": {
     "docType": "module",
@@ -376,6 +408,13 @@ angular.module('pagesData', [])
     "outputPath": "docs/api/punditConfig/object/index.html",
     "path": "api/punditConfig/object"
   },
+  "api/Pundit2.Annomatic/service": {
+    "docType": "componentGroup",
+    "id": "module:Pundit2.Annomatic.service",
+    "area": "api",
+    "outputPath": "docs/api/Pundit2.Annomatic/service/index.html",
+    "path": "api/Pundit2.Annomatic/service"
+  },
   "api/Pundit2.ContextualMenu/service": {
     "docType": "componentGroup",
     "id": "module:Pundit2.ContextualMenu.service",
@@ -411,6 +450,13 @@ angular.module('pagesData', [])
     "outputPath": "docs/api/KorboEE/object/index.html",
     "path": "api/KorboEE/object"
   },
+  "api/KorboEE/tutorial": {
+    "docType": "componentGroup",
+    "id": "module:KorboEE.tutorial",
+    "area": "api",
+    "outputPath": "docs/api/KorboEE/tutorial/index.html",
+    "path": "api/KorboEE/tutorial"
+  },
   "api/Pundit2.Preview/service": {
     "docType": "componentGroup",
     "id": "module:Pundit2.Preview.service",
@@ -438,6 +484,12 @@ angular.module('pagesData', [])
     "name": "API",
     "navGroups": [
       {
+        "name": "index",
+        "href": "api/index",
+        "type": "group",
+        "navItems": []
+      },
+      {
         "name": "punditConfig",
         "href": "api/punditConfig",
         "type": "group",
@@ -463,6 +515,11 @@ angular.module('pagesData', [])
             "type": "object"
           },
           {
+            "name": "forceTemplateEdit",
+            "href": "api/punditConfig/object/forceTemplateEdit",
+            "type": "object"
+          },
+          {
             "name": "imageFragmentAnnotator",
             "href": "api/punditConfig/object/imageFragmentAnnotator",
             "type": "object"
@@ -470,6 +527,11 @@ angular.module('pagesData', [])
           {
             "name": "korbo",
             "href": "api/punditConfig/object/korbo",
+            "type": "object"
+          },
+          {
+            "name": "lodLive",
+            "href": "api/punditConfig/object/lodLive",
             "type": "object"
           },
           {
@@ -508,7 +570,18 @@ angular.module('pagesData', [])
         "name": "Pundit2.Annomatic",
         "href": "api/Pundit2.Annomatic",
         "type": "group",
-        "navItems": []
+        "navItems": [
+          {
+            "name": "service",
+            "type": "section",
+            "href": "api/Pundit2.Annomatic/service"
+          },
+          {
+            "name": "Annomatic",
+            "href": "api/Pundit2.Annomatic/service/Annomatic",
+            "type": "service"
+          }
+        ]
       },
       {
         "name": "Pundit2.AnnotationSidebar",
@@ -628,19 +701,19 @@ angular.module('pagesData', [])
             "type": "object"
           },
           {
-            "name": "overview",
+            "name": "tutorial",
             "type": "section",
-            "href": "app/src/KorboEE/doc-content"
+            "href": "api/KorboEE/tutorial"
           },
           {
             "name": "TafonyCompatibility",
-            "href": "app/src/KorboEE/doc-content/tafonyCompatibility",
-            "type": "overview"
+            "href": "api/KorboEE/tutorial/TafonyCompatibility",
+            "type": "tutorial"
           },
           {
             "name": "UseOnlyCallBack",
-            "href": "app/src/KorboEE/doc-content/onlyCallback",
-            "type": "overview"
+            "href": "api/KorboEE/tutorial/UseOnlyCallBack",
+            "type": "tutorial"
           }
         ]
       },

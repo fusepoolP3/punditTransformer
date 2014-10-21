@@ -31,71 +31,57 @@ var punditConfig = {
 }
 </pre>
 
-<p>The &quot;modules&quot; property allows you to configure the various modules of Pundit2, 
-a full list of modules is available here:</p>
-<ul>
-<li><a href="#!/api/punditConfig/object/modules#AnnotationDetails">AnnotationDetails</a></li>
-<li><a href="#!/api/punditConfig/object/modules#AnnotationSidebar">AnnotationSidebar</a></li>
-<li><a href="#!/api/punditConfig/object/modules#Analytics">Analytics</a></li>
-<li><a href="#!/api/punditConfig/object/modules#Client">Client</a></li>
-<li><a href="#!/api/punditConfig/object/modules#Dashboard">Dashboard</a></li>
-<li><a href="#!/api/punditConfig/object/modules#FreebaseSelector">FreebaseSelector</a></li>
-<li><a href="#!/api/punditConfig/object/modules#Item">Item</a></li>
-<li><a href="#!/api/punditConfig/object/modules#KorboBasketSelector">KorboBasketSelector</a></li>
-<li><a href="#!/api/punditConfig/object/modules#MyPundit">MyPundit</a></li>
-<li><a href="#!/api/punditConfig/object/modules#MyItems">MyItems</a></li>
-<li><a href="#!/api/punditConfig/object/modules#MyIyemsContainer">MyIyemsContainer</a></li>
-<li><a href="#!/api/punditConfig/object/modules#MurucaSelector">MurucaSelector</a></li>
-<li><a href="#!/api/punditConfig/object/modules#PageItemsContainer">PageItemsContainer</a></li>
-<li><a href="#!/api/punditConfig/object/modules#Preview">Preview</a></li>
-<li><a href="#!/api/punditConfig/object/modules#ResourcePanel">ResourcePanel</a></li>
-<li><a href="#!/api/punditConfig/object/modules#SelectorsManager">SelectorsManager</a></li>
-<li><a href="#!/api/punditConfig/object/modules#TextFragmentAnnotator">TextFragmentAnnotator</a></li>
-<li><a href="#!/api/punditConfig/object/modules#TextFragmentHandler">TextFragmentHandler</a></li>
-<li><a href="#!/api/punditConfig/object/modules#Toolbar">Toolbar</a></li>
-<li><a href="#!/api/punditConfig/object/modules#TripleComposer">TripleComposer</a></li>
-<li><a href="#!/api/punditConfig/object/modules#SimplifiedClient">SimplifiedClient</a></li>
-</ul>
-<p>All the configurable properties of the modules are available within <a href="#!/api/punditConfig/object/modules">modules</a>.</p>
+<!-- module -->
 
 
-<div class="component-breakdown">
-  <h2>Module Components</h2>
+
+   
+    <div class="component-breakdown">
+      The "<a href="#!/api/punditConfig/object/modules">modules</a>" property allows you to configure the various modules of Pundit2, a full list of modules is available here:
+      <ul>
+        <li ng-repeat="element in listProperty">
+          <a href="#!/api/punditConfig/object/modules#{{element}}">{{element}}</a>
+        </li>
+      </ul>
   
-  <div>
-    <h3 class="component-heading" id="object">Object</h3>
-    <table class="definition-table">
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/korbo">korbo</a></td>
-        <!-- <td><a href="api/punditConfig/object/korbo">korbo</a></td> -->
-        <td><p><code>object</code></p>
+
+  <div class="component-breakdown">
+    <h2>Module Components</h2>
+    
+    <div>
+      <h3 class="component-heading" id="object">Object</h3>
+      <table class="definition-table">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/korbo">korbo</a></td>
+          <!-- <td><a href="api/punditConfig/object/korbo">korbo</a></td> -->
+          <td><p><code>object</code></p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/imageFragmentAnnotator">imageFragmentAnnotator</a></td>
-        <!-- <td><a href="api/punditConfig/object/imageFragmentAnnotator">imageFragmentAnnotator</a></td> -->
-        <td><p><code>object</code></p>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/imageFragmentAnnotator">imageFragmentAnnotator</a></td>
+          <!-- <td><a href="api/punditConfig/object/imageFragmentAnnotator">imageFragmentAnnotator</a></td> -->
+          <td><p><code>object</code></p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/annotationServerBaseURL">annotationServerBaseURL</a></td>
-        <!-- <td><a href="api/punditConfig/object/annotationServerBaseURL">annotationServerBaseURL</a></td> -->
-        <td><p><code>string</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/annotationServerBaseURL">annotationServerBaseURL</a></td>
+          <!-- <td><a href="api/punditConfig/object/annotationServerBaseURL">annotationServerBaseURL</a></td> -->
+          <td><p><code>string</code>
 Pundit server base URL.</p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/confURL">confURL</a></td>
-        <!-- <td><a href="api/punditConfig/object/confURL">confURL</a></td> -->
-        <td><p><code>string</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/confURL">confURL</a></td>
+          <!-- <td><a href="api/punditConfig/object/confURL">confURL</a></td> -->
+          <td><p><code>string</code>
 Pundit configuration file URL if exist, otherwise tha value is &#39;local&#39;.
 The configuration file is always available at run time inside &#39;PUNDIT&#39; global variable.
 Inside &#39;PUNDIT.config&#39; is visible the actual configuration of the client instantiated.
@@ -103,72 +89,88 @@ Default:</p>
 <pre>
 confURL: 'local'
 </pre></td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/debugAllModules">debugAllModules</a></td>
-        <!-- <td><a href="api/punditConfig/object/debugAllModules">debugAllModules</a></td> -->
-        <td><p><code>boolean</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/debugAllModules">debugAllModules</a></td>
+          <!-- <td><a href="api/punditConfig/object/debugAllModules">debugAllModules</a></td> -->
+          <td><p><code>boolean</code>
 Active debug log for all modules.</p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/vocabularies">vocabularies</a></td>
-        <!-- <td><a href="api/punditConfig/object/vocabularies">vocabularies</a></td> -->
-        <td><p><code>Array of url</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/vocabularies">vocabularies</a></td>
+          <!-- <td><a href="api/punditConfig/object/vocabularies">vocabularies</a></td> -->
+          <td><p><code>Array of url</code>
 Specifies relations vocaularies that will be available to Pundit users
 (defines a list of relations with domain and ranges). 
 Each vocabulary definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.</p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/templates">templates</a></td>
-        <!-- <td><a href="api/punditConfig/object/templates">templates</a></td> -->
-        <td><p><code>Array of url</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/templates">templates</a></td>
+          <!-- <td><a href="api/punditConfig/object/templates">templates</a></td> -->
+          <td><p><code>Array of url</code>
 Specifies templates that will be available to Pundit users
 Each template definition is a JSONP file available on the Web and is loaded by resolving an absolute URL.
 The template to be used initially as a current must be first on the list.</p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/useTemplates">useTemplates</a></td>
-        <!-- <td><a href="api/punditConfig/object/useTemplates">useTemplates</a></td> -->
-        <td><p><code>boolean</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/useTemplates">useTemplates</a></td>
+          <!-- <td><a href="api/punditConfig/object/useTemplates">useTemplates</a></td> -->
+          <td><p><code>boolean</code>
 Load configured templates.</p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/useOnlyTemplateMode">useOnlyTemplateMode</a></td>
-        <!-- <td><a href="api/punditConfig/object/useOnlyTemplateMode">useOnlyTemplateMode</a></td> -->
-        <td><p><code>boolean</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/forceTemplateEdit">forceTemplateEdit</a></td>
+          <!-- <td><a href="api/punditConfig/object/forceTemplateEdit">forceTemplateEdit</a></td> -->
+          <td><p><code>boolean</code>
+Force editing of the annotations created with templates</p>
+</td>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/useOnlyTemplateMode">useOnlyTemplateMode</a></td>
+          <!-- <td><a href="api/punditConfig/object/useOnlyTemplateMode">useOnlyTemplateMode</a></td> -->
+          <td><p><code>boolean</code>
 Use only template mode. In this mode pundit allows you to make annotations using only the templates.</p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/useBasicRelations">useBasicRelations</a></td>
-        <!-- <td><a href="api/punditConfig/object/useBasicRelations">useBasicRelations</a></td> -->
-        <td><p><code>boolean</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/useBasicRelations">useBasicRelations</a></td>
+          <!-- <td><a href="api/punditConfig/object/useBasicRelations">useBasicRelations</a></td> -->
+          <td><p><code>boolean</code>
 Load basic relations configured in Client <a href="#!/api/punditConfig/object/modules#Client">modules</a></p>
 </td>
-      </tr>
-      
-      <tr>
-        <td><a href="#!/api/punditConfig/object/modules">modules</a></td>
-        <!-- <td><a href="api/punditConfig/object/modules">modules</a></td> -->
-        <td><p><code>object</code>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/modules">modules</a></td>
+          <!-- <td><a href="api/punditConfig/object/modules">modules</a></td> -->
+          <td><p><code>object</code>
 List of all modules available in Pundit2 and their default configuration.</p>
 </td>
-      </tr>
-      
-    </table>
+        </tr>
+        
+        <tr>
+          <td><a href="#!/api/punditConfig/object/lodLive">lodLive</a></td>
+          <!-- <td><a href="api/punditConfig/object/lodLive">lodLive</a></td> -->
+          <td><p><code>object</code></p>
+</td>
+        </tr>
+        
+      </table>
+    </div>
+    
   </div>
-  
-</div>
+
 
 
 

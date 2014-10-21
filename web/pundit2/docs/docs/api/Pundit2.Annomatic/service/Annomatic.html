@@ -1,0 +1,674 @@
+
+
+
+<header class="api-profile-header">
+  <h1 class="api-profile-header-heading">Annomatic</h1>
+  <ol class="api-profile-header-structure naked-list step-list">
+    
+  
+
+    <li>
+      - service in module <a href="#!/api/Pundit2.Annomatic">Pundit2.Annomatic</a>
+    </li>
+  </ol>
+</header>
+
+
+
+<div class="api-profile-description">
+  <p>For the configuration of this module, see <a href="#!/api/punditConfig/object/modules#Annomatic">here</a></p>
+
+</div>
+
+
+
+
+<div>
+  
+
+    
+
+  
+
+  
+<h2>Methods</h2>
+<ul class="methods">
+  <li id="reset">
+    <h3><p><code>reset();</code></p>
+
+</h3>
+    <div><p>Reset all annomatic states</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="setState">
+    <h3><p><code>setState(number, value);</code></p>
+
+</h3>
+    <div><p>Set annotations state of annomatic</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        number
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">number</a>
+      </td>
+      <td>
+        <p>of the annotation</p>
+
+        
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        value
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-boolean">boolean</a>
+      </td>
+      <td>
+        <p>of the new state</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="setLastState">
+    <h3><p><code>setLastState(number);</code></p>
+
+</h3>
+    <div><p>Set last state of an annotation</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        number
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">number</a>
+      </td>
+      <td>
+        <p>of the annotation</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="getDataTXTAnnotations">
+    <h3><p><code>getDataTXTAnnotations(current);</code></p>
+
+</h3>
+    <div><p>Given an HTML node, will query DataTXT for annotations on the contents of that node
+solving the promise when done.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        current
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>node to be processed</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>promise will be resolved when the data is returned from datatxt</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="hideAnn">
+    <h3><p><code>hideAnn(number);</code></p>
+
+</h3>
+    <div><p>Hide an annotation</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        number
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">number</a>
+      </td>
+      <td>
+        <p>of the annotation</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="showAnn">
+    <h3><p><code>showAnn(number);</code></p>
+
+</h3>
+    <div><p>Show an annotation</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        number
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">number</a>
+      </td>
+      <td>
+        <p>of the annotation</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="getDataTXTAnnotations">
+    <h3><p><code>getDataTXTAnnotations(list);</code></p>
+
+</h3>
+    <div><p>Given an array of types, shows only the annotations with that
+type.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        list
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-array">array</a>
+      </td>
+      <td>
+        <p>of types</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="closeAll">
+    <h3><p><code>closeAll();</code></p>
+
+</h3>
+    <div><p>Close all popover of the annotations</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="reviewNext">
+    <h3><p><code>reviewNext(number);</code></p>
+
+</h3>
+    <div><p>If called with no parameter continues from last annotation</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        number
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">number</a>
+      </td>
+      <td>
+        <p>of the started annotation</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="hardReset">
+    <h3><p><code>hardReset();</code></p>
+
+</h3>
+    <div><p>Reset the states and all annotations in annomatic</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="run">
+    <h3><p><code>run();</code></p>
+
+</h3>
+    <div><p>Start annomatic</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="stop">
+    <h3><p><code>stop();</code></p>
+
+</h3>
+    <div><p>Stop annomatic</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="save">
+    <h3><p><code>save(number);</code></p>
+
+</h3>
+    <div><p>Create a triple and save the annotation in annotation server</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        number
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-number">number</a>
+      </td>
+      <td>
+        <p>of the annotation to be saved</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+
+  </li>
+  
+  <li id="isRunning">
+    <h3><p><code>isRunning();</code></p>
+
+</h3>
+    <div><p>Return the current state of annomatic: running or not runnging</p>
+</div>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-boolean">boolean</a></td>
+    <td><p>current state of annomatic</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="getGramsciAnnotations">
+    <h3><p><code>getGramsciAnnotations(current);</code></p>
+
+</h3>
+    <div><p>Given an HTML node, will query gramsci service for annotations on the contents of that node
+solving the promise when done.</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        current
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>node to be processed</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>promise will be resolved when the data is returned from gramsci service</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="getAnnotations">
+    <h3><p><code>getAnnotations(current);</code></p>
+
+</h3>
+    <div><p>Call service set in the configuration</p>
+</div>
+
+    
+    <h4>Parameters</h4>
+    
+<table class="variables-matrix input-arguments">
+  <thead>
+    <tr>
+      <th>Param</th>
+      <th>Type</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td>
+        current
+        
+        
+      </td>
+      <td>
+        <a href="" class="label type-hint type-hint-domelement">DOMElement</a>
+      </td>
+      <td>
+        <p>node to be processed</p>
+
+        
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+    
+
+    
+    
+    
+    <h4>Returns</h4>
+    <table class="variables-matrix return-arguments">
+  <tr>
+    <td><a href="" class="label type-hint type-hint-promise">Promise</a></td>
+    <td><p>promise will be resolved when the data is returned from the current service</p>
+</td>
+  </tr>
+</table>
+    
+
+  </li>
+  
+  <li id="getAnnotationByArea">
+    <h3><p><code>getAnnotationByArea();</code></p>
+
+</h3>
+    <div><p>Given an HTML node, will query the current service for annotations of the selected area</p>
+</div>
+
+    
+
+    
+    
+    
+
+  </li>
+  </ul>
+  
+  
+
+
+
+  
+</div>
+
+
