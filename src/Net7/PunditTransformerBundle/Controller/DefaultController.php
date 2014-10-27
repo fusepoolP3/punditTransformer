@@ -72,8 +72,6 @@ class DefaultController extends Controller
         $statusUrl = $this->generateUrl('net7_pundit_transformer_status', array('token' => $task->getToken()));
 
         $content = '';
-        //TODO: TEMPORARY HACK, until we have a UI layer, we just show the url to be used in the browser
-        $content = "USE THIS URL TO ANNOTATE THIS DOCUMENT IN YOUR BROWSER: " . $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true) . " \r\n\r\n";
 
         // we notify the UI layer about the newly available task.
         $IRURI = $task->sendInteractionRequeset($this->container->getParameter('IRURL'), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true));
@@ -86,6 +84,9 @@ class DefaultController extends Controller
 
         $response = new Response($content, 202, array());
         $response->headers->set('Location', $statusUrl);
+
+//        $response = new Response($content, 202, array('Location' => $statusUrl));
+
 
         return $response;
 
@@ -111,10 +112,12 @@ class DefaultController extends Controller
 
             case \Net7\PunditTransformerBundle\Entity\Task::STARTED_STATUS:
 
-                \EasyRdf_Namespace::set('trans', 'http://vocab.fusepool.info/transformer#');
-                $graph = new \EasyRdf_Graph();
-                $graph->add(' ', 'trans:status', 'trans:Processing');
-                $content = $graph->serialise('turtle');
+                $content =<<<EOF
+@prefix trans: <http://vocab.fusepool.info/transformer#> .
+
+<> trans:status "trans:Processing"
+
+EOF;
                 $statusCode = '202';
                 break;
 
@@ -268,7 +271,6 @@ class DefaultController extends Controller
         $response = new JsonResponse($vocabulary, 200, array());
         $response->setCallback($callback);
 
-//        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
