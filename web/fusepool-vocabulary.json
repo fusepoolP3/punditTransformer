@@ -23,7 +23,8 @@
                 "range": [
                     "http://dbpedia.org/ontology/Person",
                     "http://xmlns.com/foaf/0.1/Person",
-                    "http://www.freebase.com/schema/people/person"
+                    "http://www.freebase.com/schema/people/person",
+                    "http://purl.org/pundit/ont/ao#fragment-text"
                 ],
                 "children": []
             }
