@@ -56,14 +56,20 @@ class DefaultController extends Controller
 
         if (!$validation['status']) {
             if ($validation['message'] != \Net7\PunditTransformerBundle\Entity\Task::VALIDATION_EMPTY_INPUT) {
-
                 $document = '<html><head><meta charset="utf-8"/></head><body>' . $document . '</body></html>';
                 $task->setInput($document);
             } else {
                 return new Response($validation['message'], 400, array());
 
             }
+        }else if ($task->hasRdfInput()){
+
+            $rdf = $task->getRdfFromInput();
+            $document = '<html><head><meta charset="utf-8"/></head><body>' . $rdf. '</body></html>';
+            $task->setInput($document);
+
         }
+
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
@@ -82,10 +88,9 @@ class DefaultController extends Controller
         $em->persist($task);
         $em->flush();
 
-        $response = new Response($content, 202, array());
+        $response = new Response($content, 201, array());
         $response->headers->set('Location', $statusUrl);
 
-//        $response = new Response($content, 202, array('Location' => $statusUrl));
 
 
         return $response;
@@ -177,6 +182,8 @@ EOF;
      */
     public function saveFromPunditAction()
     {
+
+        die();
         $request = Request::createFromGlobals();
         $http_referer = $request->server->get('HTTP_REFERER');
         $token = substr($http_referer, strpos($http_referer, '/show/') + strlen('/show/'));
@@ -264,11 +271,16 @@ EOF;
         $request = Request::createFromGlobals();
         $callback = $request->get('jsonp');
 
-        ob_start();
-        include($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
-        $vocabulary = ob_get_clean();
+//        ob_start();
+//        include($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
+//        $vocabulary = ob_get_clean();
+
+        $vocabulary = file_get_contents($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
+
+//        $normalizer = new GetSetMethodNormalizer();
 
         $response = new JsonResponse($vocabulary, 200, array());
+//        $response = new JsonResponse($normalizer->normalize($vocabulary), 200, array());
         $response->setCallback($callback);
 
 

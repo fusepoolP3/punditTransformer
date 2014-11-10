@@ -20,6 +20,9 @@ class Task
 
     const VALIDATION_EMPTY_INPUT = 'Empty input';
 
+    private $rdfInputContent;
+
+
     /**
      * @var integer
      *
@@ -337,6 +340,37 @@ class Task
 
 
 
+    public function hasRdfInput(){
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($this->input);
+
+        $rdf = $dom->getElementsByTagNameNS('http://vocab.fusepool.info/fp3#','html');
+
+        $this->rdfInputContent = $dom->saveXML($rdf->item(0));
+        $this->removeFPtagsFromRdfInputContent();
+
+        return ($this->rdfInputContent  != '');
+
+    }
+
+
+    public function removeFPtagsFromRdfInputContent(){
+        $this->rdfInputContent = preg_replace('/<fp:html(.*?)>/', '', preg_replace('/<\/fp:html>/','',$this->rdfInputContent));
+        return true;
+    }
+
+    public function getRdfFromInput(){
+        $res = '';
+        if ($this->rdfInputContent != '') {
+
+
+            $res = $this->rdfInputContent;
+        }
+
+
+        return $res;
+    }
 
     /**
      * @param $data
