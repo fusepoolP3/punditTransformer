@@ -2,27 +2,28 @@ var punditConfig = {
     vocabularies: ['/vocabulary'],
     //vocabularies: ['http://manager.korbo.org/91'],
     useBasicRelations: false,
+    //useBasicRelations: true,
     modules: {
-	'Fp3': {
-	    active: true,
-        debug: true,
-	    label: 'Finish',
-	    link: 'http://punditTransformer.local/save_from_pundit'
+        'Fp3': {
+            active: true,
+            debug: true,
+            label: 'Finish',
+            link: 'http://punditTransformer.local/save_from_pundit'
         },
         'Client': {
-                active: true
+            active: true
         },
         'XpointersHelper': {
             active: true,
             debug: true
         },
-        'Korbo2Selector':{
+        'Korbo2Selector': {
             active: false
         },
-        'KorboBasketSelector':{
+        'KorboBasketSelector': {
             active: false
         },
-        'MurucaSelector':{
+        'MurucaSelector': {
             active: false
         }
 

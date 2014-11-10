@@ -6,66 +6,10 @@
         "vocab_id": "1",
         "vocab_type": "predicates",
         "items": [
-            {
-                "value": "http://vocab.fusepool.info/fam",
-                "label": "has foo",
-                "description": "The selected text fragment has been created by a specific Person",
-                "nodetype": "node",
-                "is_root_node": true,
-                "rdftype": [
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
-                ],
-                "domain": [
-                    "http://xmlns.com/foaf/0.1/Image",
-                    "http://purl.org/pundit/ont/ao#fragment-image",
-                    "http://purl.org/pundit/ont/ao#fragment-text"
-                ],
-                "range": [
-                    "http://dbpedia.org/ontology/Person",
-                    "http://xmlns.com/foaf/0.1/Person",
-                    "http://www.freebase.com/schema/people/person",
-                    "http://purl.org/pundit/ont/ao#fragment-text"
-                ],
-                "children": []
-            },
-            {
-                "value":"http://purl.org/spar/cito/cites",
-                "label":"Identifies Text",
-                "description":"The selected text fragment cites another text fragment, or a Work or a Person",
-                "nodetype":"node",
-                "is_root_node":true,
-                "rdftype":[
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
-                ],
-                "domain":[
-                "http://purl.org/pundit/ont/ao#fragment-text"
-                ],
-                "range":[
-                "http://www.freebase.com/book/book",
-                "http://www.freebase.com/periodicals/journal",
-                "http://www.freebase.com/periodicals/newspaper",
-                "http://www.freebase.com/periodicals/periodical",
-                "http://purl.org/pundit/ont/ao#fragment-text",
-                "http://www.freebase.com/schema/people/person",
-                "http://xmlns.com/foaf/0.1/Person",
-                "http://www.freebase.com/schema/book/written_work",
-                "http://www.freebase.com/schema/book/book",
-                "http://dbpedia.org/ontology/Person"
-                ],
-                "children":[
-
-                ]
-            },
-
-
-
-
-
-
 
             {
-                "value":"http://purl.org/pundit/ont/oa#identifies",
-                "label":"identifies",
+                "value":"http://vocab.fusepool.info/fam#LinkedEntity",
+                "label":"Identifies",
                 "description":"The selected text fragment is a Person, a Work, a Place or a well defined Entity",
                 "nodetype":"node",
                 "is_root_node":true,
@@ -105,13 +49,13 @@
                     "http://purl.org/pundit/ont/ao#fragment-text"
                 ],
                 "range":[
-                    "http://w3.org/2001/XMLSchema#dateTime"
+                    "http://www.w3.org/2001/XMLSchema#dateTime"
                 ],
                 "children":[
                 ]
             },
             {
-                "value":"http://purl.org/pundit/ont/oa#Language",
+                "value":"http://purl.org/pundit/ont/oa#LanguageAnnotation",
                 "label":"Language",
                 "description":"Identify the selected text fragment language",
                 "nodetype":"node",

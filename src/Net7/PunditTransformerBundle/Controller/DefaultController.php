@@ -183,7 +183,6 @@ EOF;
     public function saveFromPunditAction()
     {
 
-        die();
         $request = Request::createFromGlobals();
         $http_referer = $request->server->get('HTTP_REFERER');
         $token = substr($http_referer, strpos($http_referer, '/show/') + strlen('/show/'));
@@ -206,7 +205,60 @@ EOF;
         $asBaseUrl = $data['annotationServerBaseURL'];
         $apiUrl = $asBaseUrl . 'api/open/metadata/search?scope=all&query={"resources":["' . $punditContent . '"]}';
 
-        $task->setOutputPageContent($html);
+        $punditAnnotations = $data['annotations'];
+
+
+
+        $rdfGraph = new \EasyRdf_Graph();
+
+        \EasyRdf_Namespace::set('oa','http://www.w3.org/ns/oa#');
+        \EasyRdf_Namespace::set('fam', 'http://vocab.fusepool.info/fam#');
+        \EasyRdf_Namespace::set('nif', 'http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#');
+
+
+        foreach ($punditAnnotations as $annotation){
+
+
+            $baseUri = str_replace('show', 'view', $annotation['pageContext']);
+            $annotationUri = $baseUri . '#' . $annotation['id'];
+            $baseRangeUri = $baseUri  . '#char=0';
+            $rangeUri = $baseUri  . '#char=' . $annotation['start'] . ',' .$annotation['end'];
+
+            $res = $rdfGraph->resource($annotationUri);
+
+            $res->add('fam:selector', $rangeUri);
+            $res->add('fam:extracted-from', $baseUri);
+            $res->add('fam:entity-reference', $annotation['object']);
+            if (is_array($annotation['objectData'])) {
+                $res->add('fam:entity-mention', $annotation['objectData']['label']);
+                $res->add('fam:entity-label', $annotation['objectData']['label']);
+
+                foreach ($annotation['objectData']['type'] as $type) {
+
+                    $res->add('fam:entity-type', $type);
+                }
+            }
+            $rdfGraph->add($res, 'a', $annotation['predicate']);
+
+
+            $rangeRes = $rdfGraph->resource($rangeUri);
+            $rangeRes->add('nif:referenceContext', $baseRangeUri);
+            $rangeRes->add('nif:beginIndex', '"'.$annotation['start'].'"^^xsd:int');
+            $rangeRes->add('nif:endIndex', '"'.$annotation['end'].'"^^xsd:int');
+
+             $rdfGraph->add($rangeRes, 'a', 'fam:NifSelector, nif:String');
+
+
+
+            $task->setAnnotations($rdfGraph->serialise('turtle'));
+
+
+        }
+
+
+
+//        $task->setOutputPageContent($html);
+        /*
 
         $annotations = new \EasyRdf_Graph($apiUrl);
 
@@ -252,7 +304,7 @@ EOF;
             // we haven't received data from the Annotation Server, maybe there isn't any annotation on the page
             // we ignore the exception and procede with closing the task (the user has choosen to finish it up anyway)
         }
-
+        */
         $task->setEndedStatus();
 
         $task->sendInteractionRequestDeletion();
@@ -260,8 +312,6 @@ EOF;
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
-
-        die();
 
     }
 
