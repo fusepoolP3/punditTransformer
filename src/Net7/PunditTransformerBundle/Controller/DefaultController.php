@@ -270,8 +270,8 @@ EOF;
 
             $rangeRes = $rdfGraph->resource($rangeUri);
             $rangeRes->add('nif:referenceContext', $baseRangeUri);
-            $rangeRes->add('nif:beginIndex', '"'.$annotation['start'].'"^^xsd:int');
-            $rangeRes->add('nif:endIndex', '"'.$annotation['end'].'"^^xsd:int');
+            $rangeRes->add('nif:beginIndex',\EasyRdf_Literal::create($annotation['start'], null, 'xsd:int'));
+            $rangeRes->add('nif:endIndex', \EasyRdf_Literal::create($annotation['end'], null, 'xsd:int'));
 
              $rdfGraph->add($rangeRes, 'a', 'fam:NifSelector, nif:String');
 
