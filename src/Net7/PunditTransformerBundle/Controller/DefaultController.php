@@ -332,14 +332,21 @@ EOF;
             // we ignore the exception and procede with closing the task (the user has choosen to finish it up anyway)
         }
         */
+
+
+
+
         $task->setEndedStatus();
 
         $task->sendInteractionRequestDeletion();
+
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
         $em->flush();
 
+        $response = new Response('', 200, array());
+        return $response;
     }
 
 

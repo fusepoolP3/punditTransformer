@@ -53,26 +53,36 @@
                 ],
                 "children":[
                 ]
-            },
-            {
-                "value":"http://purl.org/pundit/ont/oa#LanguageAnnotation",
-                "label":"Language",
-                "description":"Identify the selected text fragment language",
-                "nodetype":"node",
-                "is_root_node":true,
-                "rdftype":[
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
-                ],
-                "domain":[
-                    "http://purl.org/pundit/ont/ao#fragment-text"
-                ],
-                "range":[
-
-                ],
-                "children":[
-
-                ]
             }
+
+
+
         ]
-    }
+    },
+
+
+
+
+"foo" :
+ {
+ "value":"http://purl.org/pundit/ont/oa#LanguageAnnotation",
+ "label":"Language",
+ "description":"Identify the selected text fragment language",
+ "nodetype":"node",
+ "is_root_node":true,
+ "rdftype":[
+ "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+ ],
+ "domain":[
+ "http://purl.org/pundit/ont/ao#fragment-text"
+ ],
+ "range":[
+ "http://www.freebase.com/schema/language/human_language"
+ ],
+ "children":[
+
+ ]
+ }
+
+
 }
