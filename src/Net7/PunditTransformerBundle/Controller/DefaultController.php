@@ -50,6 +50,7 @@ class DefaultController extends Controller
 
         $task = new \Net7\PunditTransformerBundle\Entity\Task();
         $task->setInput($document);
+        $task->setInputPageContent($document);
 
         $validation = $task->validateInput();
 
@@ -58,13 +59,16 @@ class DefaultController extends Controller
             if ($validation['message'] != \Net7\PunditTransformerBundle\Entity\Task::VALIDATION_EMPTY_INPUT) {
                 $document = '<html><head><meta charset="utf-8"/></head><body>' . $document . '</body></html>';
                 $task->setInput($document);
-            } else {
+               } else {
                 return new Response($validation['message'], 400, array());
 
             }
         }else if ($task->hasRdfInput()){
 
             $rdf = $task->getRdfFromInput();
+
+            $task->setInputPageContent($rdf);
+
             $document = '<html><head><meta charset="utf-8"/></head><body>' . $rdf. '</body></html>';
             $task->setInput($document);
 
@@ -157,7 +161,8 @@ EOF;
         if (!$task->isInStartedStatus()) {
             // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus()).
             // In both cases we don't want to let the user annotate the task content.
-            return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig', array());
+            return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig',
+                array('message' => 'The task you\'ve requested isn\'t available anymore'));
         }
 
         // we take the POSTed data
@@ -172,7 +177,29 @@ EOF;
         die();
     }
 
+
     /**
+     * @param $token
+     */
+    public function viewAction($token)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
+
+        if (!$task->isInEndedStatus()) {
+            // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus()).
+            // In both cases we don't want to let the user annotate the task content.
+            return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig',
+                array('message' => 'The task you\'ve requested is still active.'));
+        }
+
+        echo $task->getInputPageContent();
+        die();
+
+    }
+
+        /**
      * Invoked by the Pundit client, it is called upon finishing the annotation work.
      * The user will have clicked the "finish" button, so we need to get the annotations from the annotation server
      * and store them in the Task (we persist it in the DB).

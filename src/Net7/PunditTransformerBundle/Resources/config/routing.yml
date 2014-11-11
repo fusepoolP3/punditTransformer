@@ -23,6 +23,11 @@ net7_pundit_transformer_show:
     defaults: { _controller: Net7PunditTransformerBundle:Default:show }
     methods:   [GET]
 
+net7_pundit_transformer_view:
+    path:     /view/{token}
+    defaults: { _controller: Net7PunditTransformerBundle:Default:view }
+    methods:   [GET]
+
 net7_pundit_transformer_save_from_pundit:
     path:     /save_from_pundit
     defaults: { _controller: Net7PunditTransformerBundle:Default:saveFromPundit }
