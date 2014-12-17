@@ -95,8 +95,6 @@ class Task
     private $contentLocation;
 
 
-
-
     public function __construct()
     {
         $this->setStartedStatus();
@@ -374,28 +372,30 @@ class Task
     }
 
 
-
-    public function hasRdfInput(){
+    public function hasRdfInput()
+    {
 
         $dom = new \DOMDocument();
         $dom->loadXML($this->input);
 
-        $rdf = $dom->getElementsByTagNameNS('http://vocab.fusepool.info/fp3#','html');
+        $rdf = $dom->getElementsByTagNameNS('http://vocab.fusepool.info/fp3#', 'html');
 
         $this->rdfInputContent = $dom->saveXML($rdf->item(0));
         $this->removeFPtagsFromRdfInputContent();
 
-        return ($this->rdfInputContent  != '');
+        return ($this->rdfInputContent != '');
 
     }
 
 
-    public function removeFPtagsFromRdfInputContent(){
-        $this->rdfInputContent = preg_replace('/<fp:html(.*?)>/', '', preg_replace('/<\/fp:html>/','',$this->rdfInputContent));
+    public function removeFPtagsFromRdfInputContent()
+    {
+        $this->rdfInputContent = preg_replace('/<fp:html(.*?)>/', '', preg_replace('/<\/fp:html>/', '', $this->rdfInputContent));
         return true;
     }
 
-    public function getRdfFromInput(){
+    public function getRdfFromInput()
+    {
         $res = '';
         if ($this->rdfInputContent != '') {
 
@@ -479,7 +479,7 @@ EOF;
         $response = curl_exec($ch);
         $headers = $this->get_headers_from_curl_response($response);
 
-        if (isset($headers['Location'])){
+        if (isset($headers['Location'])) {
             $location = $headers['Location'];
         } else {
             $location = '';
@@ -488,8 +488,8 @@ EOF;
     }
 
 
-
-    public function sendInteractionRequestDeletion(){
+    public function sendInteractionRequestDeletion()
+    {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->getInteractionRequestURI());
@@ -503,8 +503,6 @@ EOF;
     }
 
 
-
-
     private function get_headers_from_curl_response($response)
     {
         $headers = array();
@@ -514,8 +512,7 @@ EOF;
         foreach (explode("\r\n", $header_text) as $i => $line)
             if ($i === 0)
                 $headers['http_code'] = $line;
-            else
-            {
+            else {
                 list ($key, $value) = explode(': ', $line);
 
                 $headers[$key] = $value;
