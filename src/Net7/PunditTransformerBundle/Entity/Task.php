@@ -87,6 +87,16 @@ class Task
     private $interactionRequestURI;
 
 
+    /**
+     * @var contentLocation
+     *
+     * @ORM\Column(name="contentLocation", type="text")
+     */
+    private $contentLocation;
+
+
+
+
     public function __construct()
     {
         $this->setStartedStatus();
@@ -97,6 +107,7 @@ class Task
         $this->setAnnotations('');
         $this->setRandomToken();
         $this->setInteractionRequestURI('');
+        $this->setContentLocation('');
     }
 
     /**
@@ -339,6 +350,30 @@ class Task
     }
 
 
+    /**
+     * Set contentLocation
+     *
+     * @param string $contentLocation
+     * @return Task
+     */
+    public function setContentLocation($contentLocation)
+    {
+        $this->contentLocation = $contentLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get contentLocation
+     *
+     * @return string
+     */
+    public function getContentLocation()
+    {
+        return $this->contentLocation;
+    }
+
+
 
     public function hasRdfInput(){
 
@@ -443,8 +478,12 @@ EOF;
 
         $response = curl_exec($ch);
         $headers = $this->get_headers_from_curl_response($response);
-        $location = $headers['Location'];
 
+        if (isset($headers['Location'])){
+            $location = $headers['Location'];
+        } else {
+            $location = '';
+        }
         return $location;
     }
 

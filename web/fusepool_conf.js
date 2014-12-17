@@ -1,8 +1,6 @@
 var punditConfig = {
     vocabularies: ['/vocabulary'],
-    //vocabularies: ['http://manager.korbo.org/91'],
     useBasicRelations: false,
-    //useBasicRelations: true,
     modules: {
         'Fp3': {
             active: true,
@@ -17,20 +15,14 @@ var punditConfig = {
             active: true,
             debug: true
         },
-        'Korbo2Selector': {
-            active: false
+        'FreebaseSelector': {
+            active: true
         },
-        'KorboBasketSelector': {
-            active: false
-        },
-        'MurucaSelector': {
-            active: false
+        'DbpediaSelector': {
+            active: true
         }
 
     },
-
     useTemplates: false,
-
     annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/'
-
 }

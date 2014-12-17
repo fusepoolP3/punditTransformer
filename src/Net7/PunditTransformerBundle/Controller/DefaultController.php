@@ -1,6 +1,7 @@
 <?php
 
 namespace Net7\PunditTransformerBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,14 +45,21 @@ class DefaultController extends Controller
     public function startAction()
     {
         $request = Request::createFromGlobals();
+        $contentLocation = $request->headers->get('Content-Location');
 
         // We expect the data to be passed as the body of the request
         $document = file_get_contents('php://input');
 
         $task = new \Net7\PunditTransformerBundle\Entity\Task();
         $task->setInput($document);
-        $task->setInputPageContent($document);
 
+        // we don't save the input page if we have received a Content-Location header, as we'll use that to show the
+        // original content, by just forwarding to it
+        if ($contentLocation) {
+            $task->setContentLocation($contentLocation);
+        } else {
+            $task->setInputPageContent($document);
+        }
         $validation = $task->validateInput();
 
 
@@ -59,17 +67,21 @@ class DefaultController extends Controller
             if ($validation['message'] != \Net7\PunditTransformerBundle\Entity\Task::VALIDATION_EMPTY_INPUT) {
                 $document = '<html><head><meta charset="utf-8"/></head><body>' . $document . '</body></html>';
                 $task->setInput($document);
-               } else {
+            } else {
                 return new Response($validation['message'], 400, array());
 
             }
-        }else if ($task->hasRdfInput()){
+        } else if ($task->hasRdfInput()) {
 
             $rdf = $task->getRdfFromInput();
 
-            $task->setInputPageContent($rdf);
+            if (!$contentLocation) {
+                // we don't save the input page if we have received a Content-Location header, as we'll use that to show the
+                // original content, by just forwarding to it
 
-            $document = '<html><head><meta charset="utf-8"/></head><body>' . $rdf. '</body></html>';
+                $task->setInputPageContent($rdf);
+            }
+            $document = '<html><head><meta charset="utf-8"/></head><body>' . $rdf . '</body></html>';
             $task->setInput($document);
 
         }
@@ -96,7 +108,6 @@ class DefaultController extends Controller
         $response->headers->set('Location', $statusUrl);
 
 
-
         return $response;
 
     }
@@ -121,7 +132,7 @@ class DefaultController extends Controller
 
             case \Net7\PunditTransformerBundle\Entity\Task::STARTED_STATUS:
 
-                $content =<<<EOF
+                $content = <<<EOF
 @prefix trans: <http://vocab.fusepool.info/transformer#> .
 
 <> trans:status "trans:Processing"
@@ -173,7 +184,6 @@ EOF;
         $page = $scraper->getContent();
 
         echo $page;
-
         die();
     }
 
@@ -187,11 +197,11 @@ EOF;
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
-        if (!$task->isInEndedStatus()) {
-            // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus()).
-            // In both cases we don't want to let the user annotate the task content.
-            return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig',
-                array('message' => 'The task you\'ve requested is still active.'));
+
+        // If a content location header was provided to the startAction, we forward to it, it will contain the content
+        if ($location = $task->getContentLocation()) {
+            header('Location: ' . $location);
+            exit();
         }
 
         echo $task->getInputPageContent();
@@ -199,7 +209,7 @@ EOF;
 
     }
 
-        /**
+    /**
      * Invoked by the Pundit client, it is called upon finishing the annotation work.
      * The user will have clicked the "finish" button, so we need to get the annotations from the annotation server
      * and store them in the Task (we persist it in the DB).
@@ -235,106 +245,78 @@ EOF;
         $punditAnnotations = $data['annotations'];
 
 
-
         $rdfGraph = new \EasyRdf_Graph();
 
-        \EasyRdf_Namespace::set('oa','http://www.w3.org/ns/oa#');
+        \EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
         \EasyRdf_Namespace::set('fam', 'http://vocab.fusepool.info/fam#');
         \EasyRdf_Namespace::set('nif', 'http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#');
 
 
-        foreach ($punditAnnotations as $annotation){
+        foreach ($punditAnnotations as $annotation) {
 
+            if (($location = $task->getContentLocation()) != '') {
+                // we take the Content-Location header received
+                $baseUri = $location;
+            } else {
+                $baseUri = str_replace('show', 'view', $annotation['pageContext']);
+            }
 
-            $baseUri = str_replace('show', 'view', $annotation['pageContext']);
             $annotationUri = $baseUri . '#' . $annotation['id'];
-            $baseRangeUri = $baseUri  . '#char=0';
-            $rangeUri = $baseUri  . '#char=' . $annotation['start'] . ',' .$annotation['end'];
+
+            $baseRangeUri = $baseUri . '#char=0';
+            $rangeUri = $baseUri . '#char=' . $annotation['start'] . ',' . $annotation['end'];
 
             $res = $rdfGraph->resource($annotationUri);
-
-            $res->add('fam:selector', $rangeUri);
+            $res->add('fam:selector', $rdfGraph->resource($rangeUri));
             $res->add('fam:extracted-from', $baseUri);
-            $res->add('fam:entity-reference', $annotation['object']);
-            if (is_array($annotation['objectData'])) {
+
+            if ($annotation['predicate'] == 'http://purl.org/pundit/ont/oa#isDate') {
+                $res->add('fam:entity-mention', $annotation['object']);
+                $res->add('fam:entity-type', $rdfGraph->resource('oa:isDate'));
+                $res->add('fam:confidence', \EasyRdf_Literal::create('1.0', null, 'xsd:double'));
+            } else {
+                $res->add('fam:entity-reference', $rdfGraph->resource($annotation['object']));
                 $res->add('fam:entity-mention', $annotation['objectData']['label']);
                 $res->add('fam:entity-label', $annotation['objectData']['label']);
 
-                foreach ($annotation['objectData']['type'] as $type) {
-
-                    $res->add('fam:entity-type', $type);
+                if (is_array($annotation['objectData'])) {
+                    foreach ($annotation['objectData']['type'] as $type) {
+                        $res->add('fam:entity-type', $rdfGraph->resource($type));
+                    }
                 }
+                $rdfGraph->add($res, 'a', $rdfGraph->resource($annotation['predicate']));
             }
-            $rdfGraph->add($res, 'a', $annotation['predicate']);
-
 
             $rangeRes = $rdfGraph->resource($rangeUri);
-            $rangeRes->add('nif:referenceContext', $baseRangeUri);
-            $rangeRes->add('nif:beginIndex',\EasyRdf_Literal::create($annotation['start'], null, 'xsd:int'));
+            $rangeRes->add('nif:referenceContext', $rdfGraph->resource($baseRangeUri));
+            $rangeRes->add('nif:beginIndex', \EasyRdf_Literal::create($annotation['start'], null, 'xsd:int'));
             $rangeRes->add('nif:endIndex', \EasyRdf_Literal::create($annotation['end'], null, 'xsd:int'));
+            $rangeRes->add('nif:anchorOf', $annotation['anchorOf']);
+            $rangeRes->add('nif:before', $annotation['before']);
+            $rangeRes->add('nif:after', $annotation['after']);
+            $rdfGraph->add($rangeRes, 'a', $rdfGraph->resource('fam:NifSelector'));
+            $rdfGraph->add($rangeRes, 'a', $rdfGraph->resource('nif:String'));
 
-             $rdfGraph->add($rangeRes, 'a', 'fam:NifSelector, nif:String');
+            $targetUri = $annotationUri . '-target';
+            $oaSpecificResource = $rdfGraph->resource($targetUri);
+            $oaSpecificResource->add('oa:hasSelector', $rdfGraph->resource($rangeUri));
+            $oaSpecificResource->add('oa:hasSource', $rdfGraph->resource($baseUri));
+            $rdfGraph->add($oaSpecificResource, 'a', $rdfGraph->resource('oa:SpecificResource'));
 
+            $oaAnnotation = $rdfGraph->resource($annotationUri . '-annotation');
+            $annotationDate = date('c', strtotime($annotation['annotatedAt']));
+            $oaAnnotation->add('oa:annotatedAt', $annotationDate);
+            $oaAnnotation->add('oa:serializedAt', $annotationDate);
+            $oaAnnotation->add('oa:annotatedBy', $annotation['annotatedBy']);
+            $oaAnnotation->add('oa:hasBody', $rdfGraph->resource($annotationUri));
+            $oaAnnotation->add('oa:hasTarget', $rdfGraph->resource($targetUri));
+            $oaAnnotation->add('oa:serializedBy', "it.netseven.pundittransformer");
 
+            $rdfGraph->add($oaAnnotation, 'a', $rdfGraph->resource('oa:Annotation'));
 
             $task->setAnnotations($rdfGraph->serialise('turtle'));
 
-
         }
-
-
-
-//        $task->setOutputPageContent($html);
-        /*
-
-        $annotations = new \EasyRdf_Graph($apiUrl);
-
-        try {
-
-            $annotations->load();
-            $annotationTurtle = $annotations->serialise('turtle');
-
-            foreach ($annotations->resources() as $key => $resource) {
-
-                $annotationId = $resource->get('<http://purl.org/pundit/ont/ao#id>');
-
-                if (!$annotationId) {
-                    // some of the sub-graphs aren't about annotation, let's skip them
-                    continue;
-                }
-                // fam:selector
-                $target = $resource->get('<http://www.openannotation.org/ns/hasTarget>');
-
-                // fam:extracted-from
-                $pageContent = $resource->get('<http://purl.org/pundit/ont/ao#hasPageContext>');
-
-                $metadataUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/metadata';
-                $graphUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/graph';
-                $itemsUrl = $asBaseUrl . 'api/open/annotations/' . $annotationId . '/items';
-
-                $md = new \EasyRdf_Graph($metadataUrl);
-                $gr = new \EasyRdf_Graph($graphUrl);
-                $it = new \EasyRdf_Graph($itemsUrl);
-
-                $md->load();
-                $gr->load();
-                $it->load();
-                $annotationTurtle .= $md->serialise('turtle');
-                $annotationTurtle .= $gr->serialise('turtle');
-                $annotationTurtle .= $it->serialise('turtle');
-
-            }
-
-            $task->setAnnotations($annotationTurtle);
-
-        } catch (\EasyRdf_Exception $e) {
-            // we haven't received data from the Annotation Server, maybe there isn't any annotation on the page
-            // we ignore the exception and procede with closing the task (the user has choosen to finish it up anyway)
-        }
-        */
-
-
-
 
         $task->setEndedStatus();
 
@@ -359,7 +341,7 @@ EOF;
 //        include($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
 //        $vocabulary = ob_get_clean();
 
-        $vocabulary = file_get_contents($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
+        $vocabulary = file_get_contents($this->get('kernel')->getRootDir() . '/../web/fusepool-vocabulary.json');
 
 //        $normalizer = new GetSetMethodNormalizer();
 
