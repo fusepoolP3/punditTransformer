@@ -336,18 +336,9 @@ EOF;
         $request = Request::createFromGlobals();
         $callback = $request->get('jsonp');
 
-//        ob_start();
-//        include($this->get('kernel')->getRootDir().'/../web/fusepool-vocabulary.json');
-//        $vocabulary = ob_get_clean();
-
         $vocabulary = file_get_contents($this->get('kernel')->getRootDir() . '/../web/fusepool-vocabulary.json');
-
-//        $normalizer = new GetSetMethodNormalizer();
-
         $response = new JsonResponse($vocabulary, 200, array());
-//        $response = new JsonResponse($normalizer->normalize($vocabulary), 200, array());
         $response->setCallback($callback);
-
 
         return $response;
     }
