@@ -273,7 +273,6 @@ EOF;
             if ($annotation['predicate'] == 'http://purl.org/pundit/ont/oa#isDate') {
                 $res->add('fam:entity-mention', $annotation['object']);
                 $res->add('fam:entity-type', $rdfGraph->resource('oa:isDate'));
-                $res->add('fam:confidence', \EasyRdf_Literal::create('1.0', null, 'xsd:double'));
             } else {
                 $res->add('fam:entity-reference', $rdfGraph->resource($annotation['object']));
                 $res->add('fam:entity-mention', $annotation['objectData']['label']);
