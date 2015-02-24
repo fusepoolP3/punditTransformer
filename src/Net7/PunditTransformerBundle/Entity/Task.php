@@ -449,7 +449,7 @@ class Task
      * Performs an User Interaction Request and returns the InteractionRequestURI
      * (to be used at a later stage to delete it when the Task is over)
      */
-    public function sendInteractionRequeset($IRURL, $url)
+    public function sendInteractionRequest($IRURL, $url, $task_token)
     {
 
         \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
@@ -463,7 +463,7 @@ class Task
 
 <> a <http://vocab.fusepool.info/fp3#InteractionRequest> ;
 	<http://vocab.fusepool.info/fp3#interactionResource> "$url" ;
-	<http://www.w3.org/2000/01/rdf-schema#comment> "Pundit-annotation"@en .
+	<http://www.w3.org/2000/01/rdf-schema#comment> "Pundit-annotation - $task_token"@en .
 EOF;
 
         $ch = curl_init();

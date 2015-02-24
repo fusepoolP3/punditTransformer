@@ -96,7 +96,7 @@ class DefaultController extends Controller
         $content = '';
 
         // we notify the UI layer about the newly available task.
-        $IRURI = $task->sendInteractionRequeset($this->container->getParameter('IRURL'), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true));
+        $IRURI = $task->sendInteractionRequest($this->container->getParameter('IRURL'), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
 
         $task->setInteractionRequestURI($IRURI);
 
