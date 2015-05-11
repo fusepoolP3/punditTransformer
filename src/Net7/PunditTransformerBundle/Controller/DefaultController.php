@@ -17,8 +17,7 @@ class DefaultController extends Controller
      */
     public function infoAction()
     {
-
-        $punditTransformerURI = $this->container->getParameter('TransformerUrl');
+        $punditTransformerURI = $this->generateUrl('net7_pundit_transformer_info', array(),true);
 
         \EasyRdf_Namespace::set('trans', 'http://vocab.fusepool.info/transformer#');
         \EasyRdf_Namespace::set('dct', 'http://purl.org/dc/terms/');
@@ -341,6 +340,22 @@ EOF;
         $response->setCallback($callback);
 
         return $response;
+    }
+
+    public function punditConfigAction(){
+        $configFile = '../web/fusepool_conf.js';
+        $h = fopen($configFile, 'r');
+        $conf = fread($h, filesize($configFile));
+        fclose($h);
+
+        // net7_pundit_transformer_info is the / route, aka the baseurl
+        $conf = str_replace('%%saveFromPunditUrl%%', $this->generateUrl('net7_pundit_transformer_save_from_pundit', array(),true), $conf);
+
+
+        $response = new Response($conf, 200, array());
+
+        return $response;
+
     }
 
 }

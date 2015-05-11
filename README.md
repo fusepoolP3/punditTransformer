@@ -56,8 +56,6 @@ and configure the two parameters as in the following example:
 
     $container->setParameter('IRURL', 'http://sandbox.fusepool.info:8181/ldp/ir-ldpc');
 
-    $container->setParameter('TransformerUrl', 'http://pundittransformer.example.org/');
-
 
 ## Usage
 

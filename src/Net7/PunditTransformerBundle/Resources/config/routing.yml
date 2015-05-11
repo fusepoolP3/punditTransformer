@@ -33,3 +33,8 @@ net7_pundit_transformer_save_from_pundit:
     defaults: { _controller: Net7PunditTransformerBundle:Default:saveFromPundit }
     methods:   [POST]
 
+
+net7_pundit_config:
+    path:     /pundit_config
+    defaults: { _controller: Net7PunditTransformerBundle:Default:punditConfig }
+    methods:   [GET]

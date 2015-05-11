@@ -6,7 +6,7 @@ var punditConfig = {
             active: true,
             debug: true,
             label: 'Finish',
-            link: 'http://punditTransformer.local/save_from_pundit'
+            link: '%%saveFromPunditUrl%%'
         },
         'Client': {
             active: true

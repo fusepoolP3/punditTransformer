@@ -135,11 +135,11 @@ class FusepoolScraper {
 
 
         $punditCode = <<<EOF
-          <script src="/fusepool_conf.js" type="text/javascript" ></script>
-          <link rel="stylesheet" href="/pundit2/feed.css" type="text/css">
-          <link rel="stylesheet" href="/pundit2/pundit2.css" type="text/css">
-          <script src="/pundit2/libs.js" type="text/javascript" ></script>
-          <script src="/pundit2/pundit2.js" type="text/javascript" ></script>
+          <link rel="stylesheet" href="/feed.css" type="text/css">
+          <link rel="stylesheet" href="http://dev.thepund.it/download/client/last-beta/pundit2.css" type="text/css">
+          <script src="http://dev.thepund.it/download/client/last-beta/libs.js" type="text/javascript" ></script>
+          <script src="http://dev.thepund.it/download/client/last-beta/pundit2.js" type="text/javascript" ></script>
+          <script src="/pundit_config" type="text/javascript" ></script>
 
 EOF;
 
