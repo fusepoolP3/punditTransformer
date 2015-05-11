@@ -172,7 +172,7 @@ EOF;
             // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus()).
             // In both cases we don't want to let the user annotate the task content.
             return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig',
-                array('message' => 'The task you\'ve requested isn\'t available anymore'));
+                array('message' => 'The task you\'ve requested isn\'t available.'));
         }
 
         // we take the POSTed data
