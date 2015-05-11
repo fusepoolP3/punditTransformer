@@ -168,7 +168,7 @@ EOF;
         $task = $em->getRepository('Net7\PunditTransformerBundle\Entity\Task')->findOneBy(array('token' => $token));
 
 
-        if (!$task->isInStartedStatus()) {
+        if (!$task || !$task->isInStartedStatus()) {
             // Either the task has been finished (isInEndedStatus()) or it encountered an error (isInErrorStatus()).
             // In both cases we don't want to let the user annotate the task content.
             return $this->render('Net7PunditTransformerBundle:Default:taskUnavailable.html.twig',
