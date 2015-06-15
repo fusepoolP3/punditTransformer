@@ -1,7 +1,5 @@
 #`Pundit` Transformer
 
-##Introduction:
-
 The PunditTransformer brings the pundit annotation tool (http://thepund.it) to the Fusepool P3 Project.
 
 It implements the Asynchronous Transformer APIs and the User Interaction Request APIs to manage its workflow.
