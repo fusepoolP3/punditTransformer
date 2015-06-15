@@ -1,4 +1,4 @@
-#`Pundit` Transformer
+# Pundit Transformer
 
 The PunditTransformer brings the pundit annotation tool (http://thepund.it) to the Fusepool P3 Project.
 
