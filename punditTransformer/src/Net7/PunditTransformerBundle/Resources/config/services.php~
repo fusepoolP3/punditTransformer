@@ -1,0 +1,4 @@
+<?php
+
+$container->setParameter('IRURL', 'http://localhost:8181/ldp/platform/uir');
+ 
