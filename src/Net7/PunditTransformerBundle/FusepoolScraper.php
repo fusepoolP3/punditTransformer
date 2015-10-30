@@ -57,10 +57,11 @@ class FusepoolScraper {
             }
 
         } else {
-
-            $html = (string)current($dom->xpath('//rdf:RDF/fp:htmlContainer/fp:html'));
-            if ($html) {
-                return $html;
+            $dom->registerXPathNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+            $dom->registerXPathNamespace('fp', 'http://dddddwww.w3.org/1999/02/22-rdf-syntax-ns#');
+            $html = $dom->xpath('//rdf:RDF/fp:htmlContainer/fp:html');
+            if (is_array($html) && count($html)>0) {
+                return (string)current($html);
             } else {
 
                 $dom = new \DOMDocument("1.0", "utf-8");
@@ -116,11 +117,11 @@ class FusepoolScraper {
 
         if (preg_match('%class="pundit-content"%',$this->punditContent)){
             $this->punditContent =
-                preg_replace('%<body%','<body data-ng-app="Pundit2" ',$this->punditContent);
+                preg_replace('%<body([^>]*)>%','<body $1><div data-ng-app="Pundit2"></div> ',$this->punditContent);
         }
         else {
             $this->punditContent =
-                preg_replace('%<body([^>]*)>%s','<body data-ng-app="Pundit2" $1><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
+                preg_replace('%<body([^>]*)>%s','<body $1><div data-ng-app="Pundit2"></div><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
             $this->punditContent =
                 preg_replace('%</body>%','</div></body>',$this->punditContent);
         }

@@ -19,20 +19,7 @@
                 "domain":[
                     "http://purl.org/pundit/ont/ao#fragment-text"
                 ],
-                "range":[
-                    "http://www.freebase.com/schema/common/topic",
-                    "https://www.freebase.com/common/topic",
-                    "http://www.freebase.com/m/02jhc#/common/topic",
-                    "http://www.freebase.com/schema/book/book",
-                    "http://www.freebase.com/schema/book/written_work",
-                    "http://xmlns.com/foaf/0.1/Person",
-                    "http://www.freebase.com/schema/people/person",
-                    "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
-                    "http://schema.org/Place",
-                    "http://dbpedia.org/ontology/Place",
-                    "http://www.freebase.com/schema/location/location",
-                    "http://www.freebase.com/people/person"
-                ],
+                "range":[],
                 "children":[
                 ]
             },

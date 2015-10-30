@@ -19,10 +19,11 @@ var punditConfig = {
             active: true
         },
         'DbpediaSelector': {
-            active: true
+            active: true,
+            limit: 99
         }
 
     },
     useTemplates: false,
-    annotationServerBaseURL: 'http://demo-cloud.as.thepund.it:8080/annotationserver/'
+    annotationServerBaseURL: 'http://staging.punditbrain.netseven.it:8182/annotationserver/'
 }
