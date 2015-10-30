@@ -1,4 +1,0 @@
-net7_pundit_transformer:
-    resource: "@Net7PunditTransformerBundle/Resources/config/routing.yml"
-    prefix:   /
-
