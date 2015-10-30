@@ -19,6 +19,7 @@ ADD ./punditTransformer /var/www/
 #Create Mysql admin user
 #RUN service mysql start; mysql -u root -e "CREATE USER 'admin'@'%' IDENTIFIED BY 'pass';";mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;"; 
 
+
 # Commands we need in order to say BOOM
 ENTRYPOINT [ "/bin/bash", "/tmp/run.sh" ]
 
