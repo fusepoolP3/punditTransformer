@@ -48,7 +48,7 @@ The PunditTransformer makes use of the User Interaction Request APIs and communi
 
 Also we need to configure the URL at which the transformer is reached, this is used in the construction of the responses.
 
-To set the tontainer and the transformer URLs, edit the file:
+To set the container and the transformer URLs, edit the file:
 
 `src/Net7/PunditTransformerBundle/Resources/config/services.php`
 

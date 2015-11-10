@@ -1,9 +1,7 @@
-# Symfony2 Docker Image
+#PunditTransformer
 
-This image expects a volume to be mounted on run and will perform the necessary commands to get the Symfony2 application into a production ready environment:
+This image is used with https://github.com/fusepoolP3/p3-platform-reference-implementation and it provides a
+transforming container for the Pundit client.
 
-  - Composer Install (With optimised autoloader)
-  - Assets Install
-  - Assetic Dump
-  - Cache Clear
+ 
 
