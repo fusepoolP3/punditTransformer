@@ -148,8 +148,8 @@ EOF;
             preg_replace('%<head>(.*)</head>%s','<head>$1 '.$punditCode.'</head>',$this->punditContent);
 
         // save the HTML in an hidden place so to be able to send it back to the FP platform at the end of the process
-        $this->punditContent =
-            preg_replace('%</body>%s', '<div style="display:none" id="html-storage"><![CDATA[' .$this->savedHTML. ']]></div></body>', $this->punditContent);
+//        $this->punditContent =
+//            preg_replace('%</body>%s', '<div style="display:none" id="html-storage"><![CDATA[' .$this->savedHTML. ']]></div></body>', $this->punditContent);
 
 
     }
