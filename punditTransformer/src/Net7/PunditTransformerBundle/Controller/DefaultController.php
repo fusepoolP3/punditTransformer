@@ -360,7 +360,7 @@ EOF;
     }
 
     private function getIRURL(){
-        $url = 'http://entry:8080';
+        $url = getenv('LDPURI');
 
         $ch = curl_init($url);
 
