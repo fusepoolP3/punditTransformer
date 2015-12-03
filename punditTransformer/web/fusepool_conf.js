@@ -25,5 +25,6 @@ var punditConfig = {
 
     },
     useTemplates: false,
-    annotationServerBaseURL: 'http://staging.punditbrain.netseven.it:8182/annotationserver/'
+    annotationServerBaseURL: 'http://staging.punditbrain.netseven.it:8182/annotationserver/',
+    annotationServerVersion: 'v2'
 }
