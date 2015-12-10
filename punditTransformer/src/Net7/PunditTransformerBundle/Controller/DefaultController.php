@@ -96,9 +96,8 @@ class DefaultController extends Controller
 
         // we notify the UI layer about the newly available task.
         $IRURI = $task->sendInteractionRequest($this->getIRURL(), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
-//        $IRURI = $task->sendInteractionRequest($this->container->getParameter('IRURL'), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
 
-        $task->setInteractionRequestURI($IRURI);
+	$task->setInteractionRequestURI($IRURI);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($task);
@@ -360,8 +359,11 @@ EOF;
     }
 
     private function getIRURL(){
+//    $url = $this->container->getParameter('IRURL')
         $url = getenv('LDPURI');
+	
 
+	
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
