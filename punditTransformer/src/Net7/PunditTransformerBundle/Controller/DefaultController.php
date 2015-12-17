@@ -102,7 +102,7 @@ class DefaultController extends Controller
         $content = '';
 
         // we notify the UI layer about the newly available task.
-        $IRURI = $task->sendInteractionRequest($this->getIRURL(), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
+        $IRURI = $task->sendInteractionRequest($this->getIRURL($platformURI), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
 
 	$task->setInteractionRequestURI($IRURI);
 
@@ -374,13 +374,11 @@ EOF;
 
     }
 
-    private function getIRURL(){
-//    $url = $this->container->getParameter('IRURL')
-        $url = getenv('LDPURI');
-	
+    private function getIRURL($platformURI){
+//        $url = getenv('LDPURI');
 
-	
-        $ch = curl_init($url);
+
+        $ch = curl_init($platformURI);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -392,7 +390,7 @@ EOF;
         \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
 
 
-        $graph = new \EasyRdf_Graph($url);
+        $graph = new \EasyRdf_Graph($platformURI);
         $graph->parse($output, 'turtle');
 
         $resources = $graph->resources();
