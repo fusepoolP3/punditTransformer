@@ -358,6 +358,15 @@ EOF;
 
     }
 
+    public function fusepoolConfigAction(){
+
+        $responseArray  = array('uri' => 'foo');
+        $response = new JsonResponse($responseArray, 200, array());
+
+        return $response;
+
+    }
+
     private function getIRURL(){
 //    $url = $this->container->getParameter('IRURL')
         $url = getenv('LDPURI');

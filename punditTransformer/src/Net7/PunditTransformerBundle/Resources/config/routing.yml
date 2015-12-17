@@ -38,3 +38,8 @@ net7_pundit_config:
     path:     /pundit_config
     defaults: { _controller: Net7PunditTransformerBundle:Default:punditConfig }
     methods:   [GET]
+
+net7_fusepool_config:
+    path:     /fusepool/config/
+    defaults: { _controller: Net7PunditTransformerBundle:Default:fusepoolConfig }
+    methods:   [POST]
