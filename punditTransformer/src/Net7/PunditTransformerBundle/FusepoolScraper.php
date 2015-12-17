@@ -118,15 +118,20 @@ class FusepoolScraper {
         if (preg_match('%class="pundit-content"%',$this->punditContent)){
             $this->punditContent =
                 preg_replace('%<body([^>]*)>%','<body $1><div data-ng-app="Pundit2"></div> ',$this->punditContent);
+
+            $this->savedHTML =  preg_replace('%<body([^>]*)>%','<body $1><div></div> ',$this->punditContent);
         }
         else {
             $this->punditContent =
                 preg_replace('%<body([^>]*)>%s','<body $1><div data-ng-app="Pundit2"></div><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
+            $this->savedHTML =
+                preg_replace('%<body([^>]*)>%s','<body $1><div></div><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
             $this->punditContent =
                 preg_replace('%</body>%','</div></body>',$this->punditContent);
+            $this->savedHTML =
+                preg_replace('%</body>%','</div></body>', $this->savedHTML);
         }
 
-        $this->savedHTML = $this->punditContent;
 
         // ==================================
         // Add JS and CSS to end of HEAD
@@ -148,8 +153,8 @@ EOF;
             preg_replace('%<head>(.*)</head>%s','<head>$1 '.$punditCode.'</head>',$this->punditContent);
 
         // save the HTML in an hidden place so to be able to send it back to the FP platform at the end of the process
-//        $this->punditContent =
-//            preg_replace('%</body>%s', '<div style="display:none" id="html-storage"><![CDATA[' .$this->savedHTML. ']]></div></body>', $this->punditContent);
+        $this->punditContent =
+            preg_replace('%</body>%s', '<div style="display:none" id="html-storage"><![CDATA[' .$this->savedHTML. ']]></div></body>', $this->punditContent);
 
 
     }
