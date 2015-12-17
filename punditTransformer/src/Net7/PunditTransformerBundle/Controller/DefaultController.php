@@ -46,6 +46,13 @@ class DefaultController extends Controller
         $request = Request::createFromGlobals();
         $contentLocation = $request->headers->get('Content-Location');
 
+        $platformURI =  $request->headers->get('platformURI');
+
+        if (!$platformURI){
+            throw new \Exception('Missing platformURI parameter!');
+
+        }
+
         // We expect the data to be passed as the body of the request
         $document = file_get_contents('php://input');
 
