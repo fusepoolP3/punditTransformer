@@ -116,20 +116,22 @@ class FusepoolScraper {
         $punditAboutCode = 'http://purl.org/fp3/punditcontent-' . $token;
 
         if (preg_match('%class="pundit-content"%',$this->punditContent)){
+            $this->savedHTML =  preg_replace('%<body([^>]*)>%','<body $1><div></div> ',$this->punditContent);
+
             $this->punditContent =
                 preg_replace('%<body([^>]*)>%','<body $1><div data-ng-app="Pundit2"></div> ',$this->punditContent);
 
-            $this->savedHTML =  preg_replace('%<body([^>]*)>%','<body $1><div></div> ',$this->punditContent);
-        }
+           }
         else {
-            $this->punditContent =
-                preg_replace('%<body([^>]*)>%s','<body $1><div data-ng-app="Pundit2"></div><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
             $this->savedHTML =
                 preg_replace('%<body([^>]*)>%s','<body $1><div></div><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
-            $this->punditContent =
-                preg_replace('%</body>%','</div></body>',$this->punditContent);
             $this->savedHTML =
                 preg_replace('%</body>%','</div></body>', $this->savedHTML);
+
+            $this->punditContent =
+                preg_replace('%<body([^>]*)>%s','<body $1><div data-ng-app="Pundit2"></div><div class="pundit-content" about="'.$punditAboutCode.'">',$this->punditContent);
+                $this->punditContent =
+                preg_replace('%</body>%','</div></body>',$this->punditContent);
         }
 
 

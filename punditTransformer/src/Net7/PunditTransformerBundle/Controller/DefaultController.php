@@ -43,10 +43,18 @@ class DefaultController extends Controller
      */
     public function startAction()
     {
+
+        $logger = $this->get('logger');
+
         $request = Request::createFromGlobals();
         $contentLocation = $request->headers->get('Content-Location');
 
-        $platformURI =  $request->headers->get('platformURI');
+        $platformURI =  $request->query->get('platformURI');
+
+
+        $logger->info('platformURI');
+        $logger->info($platformURI);
+
 
         if (!$platformURI){
             throw new \Exception('Missing platformURI parameter!');
@@ -101,8 +109,10 @@ class DefaultController extends Controller
 
         $content = '';
 
+
         // we notify the UI layer about the newly available task.
-        $IRURI = $task->sendInteractionRequest($this->getIRURL($platformURI), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
+        $IRURI = $task->sendInteractionRequest($this->getIRURL($platformURI), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken(), $logger);
+
 
 	$task->setInteractionRequestURI($IRURI);
 
@@ -375,8 +385,6 @@ EOF;
     }
 
     private function getIRURL($platformURI){
-//        $url = getenv('LDPURI');
-
 
         $ch = curl_init($platformURI);
 
@@ -385,6 +393,14 @@ EOF;
         $output = curl_exec($ch);
 
         curl_close($ch);
+
+$logger=$this->get('logger');
+        $logger->info('platformURI - in getIRURL');
+        $logger->info($platformURI);
+
+
+//        $logger->info('curl output');
+//        $logger->info ($output);
 
 
         \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
@@ -402,5 +418,7 @@ EOF;
                 return $r->get($predicate);
             }
         }
+
+        throw new \Exception('Missing IRURI !');
     }
 }
