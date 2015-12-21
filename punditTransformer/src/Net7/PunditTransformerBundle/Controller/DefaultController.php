@@ -10,11 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
+
+    const platformURIfile = 'platformURI';
+
+
     /**
      * The basic information method.
      * Display basic info on the transformer
      * @return Response
      */
+
+
+
     public function infoAction()
     {
         $punditTransformerURI = $this->generateUrl('net7_pundit_transformer_info', array(),true);
@@ -44,22 +51,10 @@ class DefaultController extends Controller
     public function startAction()
     {
 
-        $logger = $this->get('logger');
 
         $request = Request::createFromGlobals();
         $contentLocation = $request->headers->get('Content-Location');
 
-        $platformURI =  $request->query->get('platformURI');
-
-
-        $logger->info('platformURI');
-        $logger->info($platformURI);
-
-
-        if (!$platformURI){
-            throw new \Exception('Missing platformURI parameter!');
-
-        }
 
         // We expect the data to be passed as the body of the request
         $document = file_get_contents('php://input');
@@ -111,7 +106,7 @@ class DefaultController extends Controller
 
 
         // we notify the UI layer about the newly available task.
-        $IRURI = $task->sendInteractionRequest($this->getIRURL($platformURI), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken(), $logger);
+        $IRURI = $task->sendInteractionRequest($this->getIRURL(), $this->generateUrl('net7_pundit_transformer_show', array('token' => $task->getToken()), true), $task->getToken());
 
 
 	$task->setInteractionRequestURI($IRURI);
@@ -375,16 +370,47 @@ EOF;
 
     }
 
+
+
+    public function setPlatformURI($uri){
+        $h = fopen(self::platformURIfile, 'w');
+        fwrite($h, $uri, strlen($uri));
+        fclose($h);
+        return $uri;
+
+    }
+    public function getPlatformURI(){
+
+        $h = fopen(self::platformURIfile, 'r');
+        $uri = fread($h,  filesize(self::platformURIfile));
+        fclose($h);
+        return $uri;
+    }
+
     public function fusepoolConfigAction(){
 
-        $responseArray  = array('uri' => 'foo');
+
+
+
+        $request = Request::createFromGlobals();
+        $platformURI = $request->get('fusepool');
+
+
+        $this->setPlatformURI($platformURI);
+
+
+        $responseArray  = array('platform' => $platformURI);
         $response = new JsonResponse($responseArray, 200, array());
 
         return $response;
 
     }
 
-    private function getIRURL($platformURI){
+    private function getIRURL(){
+
+        $platformURI = $this->getPlatformURI();
+
+
 
         $ch = curl_init($platformURI);
 
@@ -393,14 +419,6 @@ EOF;
         $output = curl_exec($ch);
 
         curl_close($ch);
-
-$logger=$this->get('logger');
-        $logger->info('platformURI - in getIRURL');
-        $logger->info($platformURI);
-
-
-//        $logger->info('curl output');
-//        $logger->info ($output);
 
 
         \EasyRdf_Namespace::set('fp3', 'http://vocab.fusepool.info/fp3#');
