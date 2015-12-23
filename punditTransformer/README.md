@@ -43,18 +43,6 @@ After this step you'll need to actually create the database:
 
 `sudo chmod -R 777 logs/`
 
-### Configuration
-The PunditTransformer makes use of the User Interaction Request APIs and communicates with a User Interaction Request Container, which must be configured.
-
-Also we need to configure the URL at which the transformer is reached, this is used in the construction of the responses.
-
-To set the container and the transformer URLs, edit the file:
-
-`src/Net7/PunditTransformerBundle/Resources/config/services.php`
-
-and configure the two parameters as in the following example:
-
-    $container->setParameter('IRURL', 'http://sandbox.fusepool.info:8181/ldp/ir-ldpc');
 
 
 ## Usage
