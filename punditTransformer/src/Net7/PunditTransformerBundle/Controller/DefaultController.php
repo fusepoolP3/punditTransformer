@@ -299,8 +299,28 @@ EOF;
 
             $rangeRes = $rdfGraph->resource($rangeUri);
             $rangeRes->add('nif:referenceContext', $rdfGraph->resource($baseRangeUri));
-            $rangeRes->add('nif:beginIndex', \EasyRdf_Literal::create($annotation['start'], null, 'xsd:int'));
-            $rangeRes->add('nif:endIndex', \EasyRdf_Literal::create($annotation['end'], null, 'xsd:int'));
+
+
+            $begin = \EasyRdf_Literal::create($annotation['start'], null, 'xsd:int');
+            if(!$begin){
+                $begin = 0;
+            }
+            $rangeRes->add('nif:beginIndex', $begin);
+
+
+            $end = \EasyRdf_Literal::create($annotation['end'], null, 'xsd:int');
+            if (!$end){
+                $end= 0 ;
+            }
+
+            $rangeRes->add('nif:endIndex', $end);
+
+
+
+
+//            $rangeRes->add('nif:beginIndex', \EasyRdf_Literal::create($annotation['start'], null, 'xsd:int'));
+//            $rangeRes->add('nif:endIndex', \EasyRdf_Literal::create($annotation['end'], null, 'xsd:int'));
+
             $rangeRes->add('nif:anchorOf', $annotation['anchorOf']);
             $rangeRes->add('nif:before', $annotation['before']);
             $rangeRes->add('nif:after', $annotation['after']);
