@@ -142,11 +142,20 @@ class FusepoolScraper {
         //          <link rel="stylesheet" href="/feedthepundit/src/css/feed.css" type="text/css">
 
 
+//        $punditCode = <<<EOF
+//          <link rel="stylesheet" href="/feed.css" type="text/css">
+//          <link rel="stylesheet" href="http://dev.thepund.it/download/client/last-beta/pundit2.css" type="text/css">
+//          <script src="http://dev.thepund.it/download/client/last-beta/libs.js" type="text/javascript" ></script>
+//          <script src="http://dev.thepund.it/download/client/last-beta/pundit2.js" type="text/javascript" ></script>
+//          <script src="/pundit_config" type="text/javascript" ></script>
+//
+//EOF;
+
         $punditCode = <<<EOF
           <link rel="stylesheet" href="/feed.css" type="text/css">
           <link rel="stylesheet" href="http://dev.thepund.it/download/client/last-beta/pundit2.css" type="text/css">
-          <script src="http://dev.thepund.it/download/client/last-beta/libs.js" type="text/javascript" ></script>
-          <script src="http://dev.thepund.it/download/client/last-beta/pundit2.js" type="text/javascript" ></script>
+          <script src="http://dev.thepund.it/download/client/2.0.66.beta.20160120/libs.js" type="text/javascript" ></script>
+          <script src="http://dev.thepund.it/download/client/2.0.66.beta.20160120/pundit2.js" type="text/javascript" ></script>
           <script src="/pundit_config" type="text/javascript" ></script>
 
 EOF;
